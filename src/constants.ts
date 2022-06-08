@@ -25,6 +25,11 @@ const QueryParam = {
   Embed: '_embed',
 } as const;
 
+const QueryParamPrefix = {
+  Name: 'name',
+} as const;
+
+
 const Namespace = {
   Products: 'products',
   Comments: 'comments',
@@ -56,6 +61,7 @@ export {
   APIRoute,
   AppRoute,
   QueryParam,
+  QueryParamPrefix,
   Namespace,
   ToastParam,
   ErrorMessage,
