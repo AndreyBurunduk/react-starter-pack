@@ -4,7 +4,13 @@ import CatalogScreen from '../catalog-screen/catalog-screen';
 import {AppRoute} from '../../constants';
 
 function App(): JSX.Element {
-  return <p>Hello, world!</p>;
+  return (
+    <Switch>
+      <Route exact path={AppRoute.CatalogScreen}>
+        <CatalogScreen />
+      </Route>
+    </Switch>
+  );
 }
 
 export default App;
