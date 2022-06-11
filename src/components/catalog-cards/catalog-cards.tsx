@@ -26,7 +26,6 @@ function CatalogSort(): JSX.Element {
       dispatch(setSortType(SortType.Price));
     }
   };
-
   return (
     <div className="catalog-sort">
       <h2 className="catalog-sort__title">Сортировать:</h2>
