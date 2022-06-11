@@ -1,69 +1,56 @@
-import {MouseEvent} from 'react';
-import {SortType, OrderType} from '../../enums';
+import {useEffect} from 'react';
+import {useLocation, useParams} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-import {addClassModifier} from '../../utils';
-import {setOrderType, setSortType} from '../../store/sort/sort-action';
+import {getProducts, isProductsFailure, isProductsLoading, isProductsSuccess} from '../../store/products/products-selectors';
 import {getOrderType, getSortType} from '../../store/sort/sort-selectors';
+import {fetchProducts} from '../../store/products/products-api-actions';
+import ProductCard from '../product-card/product-card';
+import {ReactComponent as ProductCardSkeleton} from '../../assets/skeleton-card.svg';
+import {createIndexList} from '../../utils';
+import {NUM_PRODUCTS_PER_PAGE, SearchParamPostfix} from '../../constants';
 
-function CatalogSort(): JSX.Element {
-  const sortType = useSelector(getSortType);
-  const orderType = useSelector(getOrderType);
 
+function CatalogCards(): JSX.Element {
+  const {pageId} = useParams<{pageId: string}>();
+  const firstPageIndex = pageId ? (Number(pageId) - 1) * NUM_PRODUCTS_PER_PAGE : 0;
+
+  const location = useLocation();
   const dispatch = useDispatch();
 
-  const handleSortButtonClick = (evt: MouseEvent<HTMLButtonElement>) => {
-    dispatch(setSortType(evt.currentTarget.dataset.sort as SortType));
+  const products = useSelector(getProducts);
+  const isLoading = useSelector(isProductsLoading);
+  const isFailure = useSelector(isProductsFailure);
+  const isSuccess = useSelector(isProductsSuccess);
+  const sortType = useSelector(getSortType);
+  const orderType = useSelector(getOrderType);
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
 
-    if (!orderType) {
-      dispatch(setOrderType(OrderType.Ascending));
-    }
-  };
+    searchParams.append(SearchParamPostfix.Start, firstPageIndex.toString());
+    searchParams.append(SearchParamPostfix.Limit, NUM_PRODUCTS_PER_PAGE.toString());
+    sortType && searchParams.append(SearchParamPostfix.Sort, sortType);
+    orderType && searchParams.append(SearchParamPostfix.Order, orderType);
 
-  const handleOrderButtonClick = (evt: MouseEvent<HTMLButtonElement>) => {
-    dispatch(setOrderType(evt.currentTarget.dataset.order as OrderType));
+    dispatch(fetchProducts(searchParams));
+  }, [dispatch, firstPageIndex, location.search, orderType, sortType]);
 
-    if (!sortType) {
-      dispatch(setSortType(SortType.Price));
-    }
-  };
   return (
-    <div className="catalog-sort">
-      <h2 className="catalog-sort__title">Сортировать:</h2>
-      <div className="catalog-sort__type">
-        <button
-          onClick={handleSortButtonClick}
-          className={addClassModifier(sortType === SortType.Price, 'catalog-sort__type-button')}
-          aria-label="по цене"
-          tabIndex={sortType === SortType.Price ? -1 : undefined}
-          data-sort={SortType.Price}
-        >по цене
-        </button>
-        <button
-          onClick={handleSortButtonClick}
-          className={addClassModifier(sortType === SortType.Rating, 'catalog-sort__type-button')}
-          aria-label="по популярности"
-          tabIndex={sortType === SortType.Rating ? -1 : undefined}
-          data-sort={SortType.Rating}
-        >по популярности
-        </button>
-      </div>
-      <div className="catalog-sort__order">
-        <button
-          onClick={handleOrderButtonClick}
-          className={`${addClassModifier(orderType === OrderType.Ascending, 'catalog-sort__order-button')} catalog-sort__order-button--up`}
-          aria-label="По возрастанию"
-          tabIndex={orderType === OrderType.Ascending ? -1 : undefined}
-          data-order={OrderType.Ascending}
+    <div className="cards catalog__cards">
+      {(isLoading || isFailure) && (
+        createIndexList(NUM_PRODUCTS_PER_PAGE)
+          .map((index) => (
+            <ProductCardSkeleton
+              key={index}
+            />
+          ))
+      )}
+      {isSuccess && products.map((product) => (
+        <ProductCard
+          key={product.id}
+          product={product}
         />
-        <button
-          onClick={handleOrderButtonClick}
-          className={`${addClassModifier(orderType === OrderType.Descending, 'catalog-sort__order-button')} catalog-sort__order-button--down`}
-          aria-label="По убыванию"
-          tabIndex={orderType === OrderType.Descending ? -1 : undefined}
-          data-order={OrderType.Descending}
-        />
-      </div>
+      ))}
     </div>
   );
 }
-export default CatalogSort;
+export default CatalogCards;

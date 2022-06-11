@@ -1,12 +1,20 @@
 import {createAction} from '@reduxjs/toolkit';
 import {ActionType, StatusType} from '../../enums';
 import {Product} from '../../types/product';
-
 const setProducts = createAction(
   ActionType.SetProducts,
   (products: Product[]) => ({
     payload: {
       products,
+    },
+  }),
+);
+
+const setProductsTotalCount = createAction(
+  ActionType.SetProductsTotalCount,
+  (totalCount: number) => ({
+    payload: {
+      totalCount,
     },
   }),
 );
@@ -20,4 +28,4 @@ const setProductsStatus = createAction(
   }),
 );
 
-export {setProducts, setProductsStatus};
+export {setProducts, setProductsTotalCount, setProductsStatus};
