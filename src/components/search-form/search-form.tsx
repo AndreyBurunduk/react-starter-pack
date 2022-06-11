@@ -1,48 +1,47 @@
 import {FormEvent, KeyboardEvent, useEffect, useRef, useState} from 'react';
-import {useHistory} from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {useDebounce} from 'use-debounce';
-import {getFoundProducts, getFoundProductsStatus} from '../../store/search/search-selectors';
+
+import {getFoundProducts, isFoundProductsLoading, isFoundProductsSuccess} from '../../store/search/search-selectors';
 import {fetchFoundProducts} from '../../store/search/search-api-actions';
 import {setFoundProducts, setFoundProductsStatus} from '../../store/search/search-actions';
 import {DEBOUNCE_DELAY, KeyAttributeValue, SearchParamPostfix, SearchParamKey} from '../../constants';
 import {StatusType} from '../../enums';
+import {addClassModifier} from '../../utils';
 
 function SearchForm(): JSX.Element {
-  const [searchValue, setSearchValue] = useState('');
-
-  const [debouncedSearchValue] = useDebounce(searchValue, DEBOUNCE_DELAY);
   const [isSelectListOpen, setIsSelectListOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [searchValue, setSearchValue] = useState('');
+  const [debouncedSearchValue] = useDebounce(searchValue, DEBOUNCE_DELAY);
   const selectElements = useRef<Record<number, HTMLLIElement>>({});
+
   const foundProducts = useSelector(getFoundProducts);
-  const foundProductsStatus = useSelector(getFoundProductsStatus);
+
+  const isLoading = useSelector(isFoundProductsLoading);
+  const isSuccess = useSelector(isFoundProductsSuccess);
 
   const history = useHistory();
+  const {search} = useLocation();
   const dispatch = useDispatch();
 
   let timer: number | null = null;
-
   const handleFormFocus = () => {
-
+    setIsSelectListOpen(true);
     if (timer) {
       clearTimeout(timer);
-      setHighlightedIndex(-1);
     }
   };
-
   const handleFormBlur = () => {
-    setHighlightedIndex(-1);
-
     timer = setTimeout(() => {
       setIsSelectListOpen(false);
+      setHighlightedIndex(-1);
     });
   };
-
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
   };
-
   const handleFormKeydown = (evt: KeyboardEvent) => {
     switch (evt.code) {
       case KeyAttributeValue.ArrowDown:
@@ -64,25 +63,29 @@ function SearchForm(): JSX.Element {
       case KeyAttributeValue.Enter:
         evt.preventDefault();
         if (highlightedIndex !== -1 && isSelectListOpen) {
-          history.push(`#${foundProducts[highlightedIndex].id}`);
+          history.push({
+            search: search,
+            hash: `#${foundProducts[highlightedIndex].id}`,
+          });
         }
         break;
       default:
         break;
     }
   };
-
   const handleInputChange = (evt: FormEvent<HTMLInputElement>) => {
     setSearchValue(evt.currentTarget.value);
     setHighlightedIndex(-1);
   };
-
   const handleSelectElementMouseEnter = (index: number) => () => {
     setHighlightedIndex(index);
   };
 
   const handleSelectElementClick = (id: number) => () => {
-    history.push(`#${id}`);
+    history.push({
+      search: search,
+      hash: `#${id}`,
+    });
   };
 
   useEffect(() => {
@@ -91,13 +94,11 @@ function SearchForm(): JSX.Element {
         [SearchParamKey.Name.concat(SearchParamPostfix.Like)]: debouncedSearchValue,
       }));
     }
-
     return () => {
       dispatch(setFoundProducts([]));
       dispatch(setFoundProductsStatus(StatusType.Idle));
     };
   }, [dispatch, debouncedSearchValue]);
-
   return (
     <div
       onFocus={handleFormFocus}
@@ -108,9 +109,6 @@ function SearchForm(): JSX.Element {
       <form
         onSubmit={handleFormSubmit}
         className="form-search__form"
-        style={foundProducts.length <= 0 && foundProductsStatus === StatusType.Success
-          ? {borderColor:'#c90606'}
-          : undefined}
       >
         <button
           className="form-search__submit"
@@ -135,20 +133,15 @@ function SearchForm(): JSX.Element {
           autoComplete="off"
           placeholder="что вы ищите?"
         />
-        {isSelectListOpen && foundProducts.length > 0 && (
-          <img
-            style={{position:'absolute', top:5, right:5}}
-            width="30"
-            height="30"
-            src="./img/svg/loader.svg"
-            alt="Загрузка..."
-          />
+        {isLoading && (
+          <svg className="form-search__icon-loader" width="30" height="30" aria-hidden="true">
+            <use xlinkHref="#icon-loader" />
+          </svg>
         )}
       </form>
-      {(isSelectListOpen && foundProducts.length > 0) && (
+      {isSelectListOpen && foundProducts.length > 0 && (
         <ul
           className="form-search__select-list"
-          style={{zIndex: '1'}}
           tabIndex={-1}
         >
           {foundProducts.map((foundProduct, index) => (
@@ -157,17 +150,18 @@ function SearchForm(): JSX.Element {
               onMouseEnter={handleSelectElementMouseEnter(index)}
               onClick={handleSelectElementClick(foundProduct.id)}
               ref={(node: HTMLLIElement) => (selectElements.current[index] = node)}
-              className="form-search__select-item"
-              style={highlightedIndex === index
-                ? {color:'#545454'}
-                : undefined}
+              className={addClassModifier(highlightedIndex === index, 'form-search__select-item', 'hover')}
             >{foundProduct.name}
             </li>
           ))}
         </ul>
       )}
+      {isSelectListOpen && isSuccess && foundProducts.length === 0 && (
+        <ul className="form-search__select-list">
+          <li className="form-search__select-item">Поиск не дал результатов</li>
+        </ul>
+      )}
     </div>
   );
 }
-
 export default SearchForm;
