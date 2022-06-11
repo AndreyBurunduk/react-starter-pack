@@ -3,7 +3,7 @@ import {Link, useLocation} from 'react-router-dom';
 import {AppRoute} from '../../constants';
 
 type LogoProps = {
-  className: string;
+  className?: string;
 }
 
 function Logo({className}: LogoProps): JSX.Element {
@@ -19,7 +19,7 @@ function Logo({className}: LogoProps): JSX.Element {
   return (
     <Link
       onClick={handleLinkClick}
-      className={`${className}__logo logo`}
+      className={`${className = 'header'}__logo logo`}
       style={{pointerEvents: `${isMainScreenRoute ? 'none' : 'auto'}`}}
       to={AppRoute.MainScreen}
     >

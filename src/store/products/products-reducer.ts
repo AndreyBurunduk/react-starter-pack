@@ -21,4 +21,4 @@ const productsReducer = createReducer(productsInitialState, (builder) => {
       state.status = action.payload.status;
     });
 });
-export {productsReducer};
+export {productsInitialState, productsReducer};

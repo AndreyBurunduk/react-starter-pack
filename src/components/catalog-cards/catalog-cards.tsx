@@ -31,7 +31,7 @@ function CatalogCards(): JSX.Element {
   return (
     <>
       {(isLoading || isFailure) && (
-        <div className="cards catalog__cards">
+        <div className="cards catalog__cards" data-testid="loading-cards">
           {createIndexList(NUM_PRODUCTS_PER_PAGE)
             .map((index) => (
               <ProductCardSkeleton
@@ -41,7 +41,7 @@ function CatalogCards(): JSX.Element {
         </div>
       )}
       {isSuccess && products.length > 0 &&  (
-        <div className="cards catalog__cards">
+        <div className="cards catalog__cards" data-testid="success-cards">
           {isSuccess && products.map((product) => (
             <ProductCard
               key={product.id}
