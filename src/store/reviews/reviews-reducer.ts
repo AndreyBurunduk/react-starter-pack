@@ -1,7 +1,7 @@
 import {createReducer} from '@reduxjs/toolkit';
 import {setFetchedReviews, setReview, setReviews, setReviewsStatus, setReviewStatus, setReviewsTotalCount} from './reviews-actions';
-import {StatusType} from '../../enums';
 import {ReviewsState} from '../../types/state';
+import {StatusType} from '../../common/enums';
 
 const reviewsInitialState: ReviewsState = {
   reviews: [],
@@ -9,7 +9,6 @@ const reviewsInitialState: ReviewsState = {
   status: StatusType.Idle,
   postStatus: StatusType.Idle,
 };
-
 const reviewsReducer = createReducer(reviewsInitialState, (builder) => {
   builder
     .addCase(setReview, (state, action) => {
@@ -32,5 +31,4 @@ const reviewsReducer = createReducer(reviewsInitialState, (builder) => {
       state.status = action.payload.status;
     });
 });
-
 export {reviewsInitialState, reviewsReducer};

@@ -2,13 +2,14 @@ import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchReviews} from '../../../../store/reviews/reviews-api-actions';
 import {getReviews, getReviewsTotalCount, isReviewsFailure, isReviewsIdle, isReviewsLoading, isReviewsSuccess} from '../../../../store/reviews/reviews-selectors';
-import Rate from '../../../shared/rate/rate';
-import {addClassModifier} from '../../../../utils';
-import {APP_LOCALE, REVIEWS_COUNT_PER_STEP} from '../../../../constants';
-type ReviewsProps = {
+import {Rate} from '../../../shared/shared';
+import {addClassModifier} from '../../../../utils/utils';
+import {APP_LOCALE, REVIEWS_COUNT_PER_STEP} from '../../../../common/constants';
+
+type ReviewListProps = {
   productId: number;
 }
-function ReviewList({productId}: ReviewsProps): JSX.Element {
+function ReviewList({productId}: ReviewListProps): JSX.Element {
   const reviews = useSelector(getReviews);
   const reviewsTotalCount = useSelector(getReviewsTotalCount);
   const isIdleStatus = useSelector(isReviewsIdle);
@@ -77,7 +78,6 @@ function ReviewList({productId}: ReviewsProps): JSX.Element {
       <ul className="review-list">
         {reviews.map((review) => {
           const {id, userName, advantage, disadvantage, comment: commentText, rating, createAt} = review;
-
           return(
             <li key={id} className="review" data-testid="review">
               <div className="review__wrapper">
@@ -89,7 +89,12 @@ function ReviewList({productId}: ReviewsProps): JSX.Element {
                   })}
                 </span>
               </div>
-              <Rate className="review__rating-panel" width="16" height="16" rating={rating} />
+              <Rate
+                className="review__rating-panel"
+                width="16"
+                height="16"
+                rating={rating}
+              />
               <h5 className="review__title title title--lesser">Достоинства:</h5>
               <p className="review__value">{advantage}</p>
               <h5 className="review__title title title--lesser">Недостатки:</h5>

@@ -1,11 +1,11 @@
-import Modal from '../modals/modal/modal';
+import Modal from '../modal/modal';
 
-type ModalPostReviewProps = {
+type ReviewAddSuccessProps = {
   isModalOpen: boolean;
   onModalOpenSelect: (isOpen: boolean) => void;
 }
 
-function ModalSuccessReview({isModalOpen, onModalOpenSelect}: ModalPostReviewProps): JSX.Element {
+function ReviewAddSuccess({isModalOpen, onModalOpenSelect}: ReviewAddSuccessProps): JSX.Element {
   const handleButtonClick = () => {
     onModalOpenSelect(false);
   };
@@ -31,4 +31,4 @@ function ModalSuccessReview({isModalOpen, onModalOpenSelect}: ModalPostReviewPro
   );
 }
 
-export default ModalSuccessReview;
+export default ReviewAddSuccess;

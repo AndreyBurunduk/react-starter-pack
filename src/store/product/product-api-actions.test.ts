@@ -7,8 +7,8 @@ import {setProduct, setProductStatus} from './product-actions';
 import {fetchProduct} from './product-api-actions';
 import {State} from '../../types/state';
 import {createMockProduct} from '../../mocks/products';
-import {APIRoute} from '../../constants';
-import {StatusType} from '../../enums';
+import {APIRoute} from '../../common/constants';
+import {StatusType} from '../../common/enums';
 
 const api = createAPI();
 const mockAPI = new MockAdapter(api);
@@ -17,15 +17,12 @@ const mockStore = configureMockStore<State, Action, ThunkDispatch<State, typeof 
 const store = mockStore();
 const mockProduct = createMockProduct();
 const mockProductId = mockProduct.id;
-
 describe('Async API actions: product', () => {
   it('should dispatch setProduct and setProductStatus when GET /guitars/productId', async () => {
     mockAPI
       .onGet(APIRoute.GetProduct(mockProductId))
       .reply(200, mockProduct);
-
     await store.dispatch(fetchProduct(mockProductId));
-
     expect(store.getActions()).toEqual([
       setProductStatus(StatusType.Loading),
       setProduct(mockProduct),

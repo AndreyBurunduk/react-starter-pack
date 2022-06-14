@@ -1,9 +1,8 @@
 import {Watch} from 'react-loader-spinner';
-import {LoaderParam} from '../../constants';
+import {LoaderParam} from '../../common/constants';
 import './style.css';
 
 const {Color, Size: {Width, Height}} = LoaderParam;
-
 function LoadingScreen(): JSX.Element {
   return (
     <>
@@ -19,5 +18,4 @@ function LoadingScreen(): JSX.Element {
     </>
   );
 }
-
 export default LoadingScreen;

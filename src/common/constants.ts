@@ -8,7 +8,6 @@ const REQUEST_TIMEOUT = 5000;
 const FOCUS_TIMEOUT = 100;
 const DEBOUNCE_DELAY = 500;
 const TRANSITION_DELAY = 600;
-
 const APIRoute = {
   GetProducts: () => '/guitars',
   GetProduct: (id: number) => `/guitars/${id}`,
@@ -22,6 +21,7 @@ const AppRoute = {
   CatalogScreenPrefix: '/catalog/page',
   ProductScreenWithProductId: '/products/:productId',
   ProductScreenPrefix: '/products/',
+  CartScreen: '/cart',
 } as const;
 const SearchParamKey = {
   Name: 'name',
@@ -48,7 +48,9 @@ const Namespace = {
   Search: 'search',
   Sort: 'sort',
   Filter: 'filter',
+  Cart: 'cart',
 } as const;
+
 const ToastParam = {
   Theme: 'colored',
   Position: 'top-right',
@@ -75,8 +77,9 @@ const LoaderParam = {
     Height: 100,
   },
 } as const;
+
 const GuitarTypeTranslation = {
-  Acoustic: 'Акустические гитара',
+  Acoustic: 'Акустическая гитара',
   Electric: 'Электрогитара',
   Ukulele: 'Укулеле',
 } as const;

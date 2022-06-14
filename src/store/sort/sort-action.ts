@@ -1,5 +1,5 @@
 import {createAction} from '@reduxjs/toolkit';
-import {ActionType, OrderType, SortType} from '../../enums';
+import {ActionType, OrderType, SortType} from '../../common/enums';
 
 const setSortType = createAction(
   ActionType.SetSortType,
@@ -9,7 +9,6 @@ const setSortType = createAction(
     },
   }),
 );
-
 const setOrderType = createAction(
   ActionType.SetOrderType,
   (orderType: OrderType) => ({
@@ -18,5 +17,4 @@ const setOrderType = createAction(
     },
   }),
 );
-
 export {setSortType, setOrderType};

@@ -1,16 +1,15 @@
 import {render, screen} from '@testing-library/react';
-import ModalSuccessReview from './modal-success-review';
+import ReviewAddSuccess from './review-add-success';
 
 const onModalOpenSelect = jest.fn();
 
-describe('Component: ModalSuccessReview', () => {
+describe('Component: ReviewSuccessMessage', () => {
   it('should render correctly', () => {
     render(
-      <ModalSuccessReview
+      <ReviewAddSuccess
         isModalOpen
         onModalOpenSelect={onModalOpenSelect}
       />);
-
     expect(screen.getByText(/Спасибо за ваш отзыв/i)).toBeInTheDocument();
   });
 });

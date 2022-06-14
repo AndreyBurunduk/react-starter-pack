@@ -1,5 +1,5 @@
 import {createAction} from '@reduxjs/toolkit';
-import {ActionType, StatusType} from '../../enums';
+import {ActionType, StatusType} from '../../common/enums';
 
 const setPriceRangeMin = createAction(
   ActionType.SetPriceRangeMin,
@@ -9,7 +9,6 @@ const setPriceRangeMin = createAction(
     },
   }),
 );
-
 const setPriceRangeMax = createAction(
   ActionType.SetPriceRangeMax,
   (priceRangeMax: number) => ({
@@ -18,7 +17,6 @@ const setPriceRangeMax = createAction(
     },
   }),
 );
-
 const setPriceRangeStatus = createAction(
   ActionType.SetPriceRangeStatus,
   (status: StatusType) => ({
@@ -27,5 +25,4 @@ const setPriceRangeStatus = createAction(
     },
   }),
 );
-
 export {setPriceRangeMin, setPriceRangeMax, setPriceRangeStatus};

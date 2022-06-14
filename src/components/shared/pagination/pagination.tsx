@@ -2,20 +2,17 @@ import {useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {Link, useHistory, useLocation, useParams} from 'react-router-dom';
 import {getProductsTotalCount, isProductsSuccess} from '../../../store/products/products-selectors';
-import {addClassModifier, createIndexList} from '../../../utils';
-import {AppRoute, PRODUCTS_COUNT_PER_PAGE} from '../../../constants';
+import {addClassModifier, createIndexList} from '../../../utils/utils';
+import {AppRoute, PRODUCTS_COUNT_PER_PAGE} from '../../../common/constants';
 
 function Pagination(): JSX.Element {
   const history = useHistory();
   const {search} = useLocation();
-
   const isProductsSuccessStatus = useSelector(isProductsSuccess);
   const totalCount = useSelector(getProductsTotalCount);
   const totalPageCount = Math.ceil(totalCount / PRODUCTS_COUNT_PER_PAGE);
-
   const {pageId} = useParams<{pageId: string}>();
   const currentPageId = parseInt(pageId, 10);
-
   useEffect(() => {
     if (isProductsSuccessStatus && (!currentPageId || currentPageId > totalPageCount)) {
       history.replace({
@@ -24,7 +21,6 @@ function Pagination(): JSX.Element {
       });
     }
   }, [isProductsSuccessStatus, currentPageId, history, totalPageCount, search]);
-
   return (
     <div className="pagination page-content__pagination">
       {totalCount !== 0 && (

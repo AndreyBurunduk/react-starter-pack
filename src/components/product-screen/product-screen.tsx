@@ -9,20 +9,14 @@ import {Header, Breadcrumbs, Rate, Footer} from '../shared/shared';
 import {Reviews} from './components/components';
 import LoadingScreen from '../loading-screen/loadingScreen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
-import {addClassModifier} from '../../utils';
-import {GuitarType, StatusType} from '../../enums';
-import {APP_LOCALE, AppRoute, GuitarTypeTranslation} from '../../constants';
-
-const GuitarTypeToTranslationMap = new Map([
-  [GuitarType.Acoustic, GuitarTypeTranslation.Acoustic],
-  [GuitarType.Electric, GuitarTypeTranslation.Electric],
-  [GuitarType.Ukulele, GuitarTypeTranslation.Ukulele],
-]);
+import {addClassModifier} from '../../utils/utils';
+import {GuitarType, StatusType} from '../../common/enums';
+import {APP_LOCALE, AppRoute} from '../../common/constants';
+import {GuitarTypeToTranslationMap} from '../../common/collections';
 
 function ProductScreen(): JSX.Element {
   const {productId} = useParams<{productId: string}>();
   const {hash} = useLocation();
-
   const product = useSelector(getProduct);
   const isIdleStatus = useSelector(isProductIdle);
   const isLoadingStatus = useSelector(isProductLoading);
@@ -30,31 +24,23 @@ function ProductScreen(): JSX.Element {
   const isNotFoundStatus = useSelector(isProductNotFound);
   const reviewsCount = useSelector(getReviewsTotalCount);
   const isReviewsSuccessStatus = useSelector(isReviewsSuccess);
-
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(fetchProduct(Number(productId)));
-
     return () => {
       dispatch(setProductStatus(StatusType.Idle));
     };
   }, [dispatch, productId]);
-
   if (isFailureStatus) {
     return <Redirect to={AppRoute.MainScreen} />;
   }
-
   if (isNotFoundStatus) {
     return <NotFoundScreen />;
   }
-
   if (product === null || isIdleStatus || isLoadingStatus) {
     return <LoadingScreen />;
   }
-
   const {id, name, vendorCode, type, description, previewImg, stringCount, rating, price} = product;
-
   return (
     <div className="wrapper">
       <Header />
@@ -130,5 +116,4 @@ function ProductScreen(): JSX.Element {
     </div>
   );
 }
-
 export default ProductScreen;

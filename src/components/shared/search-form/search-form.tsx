@@ -2,13 +2,12 @@ import {FormEvent, KeyboardEvent, useEffect, useRef, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {useDebounce} from 'use-debounce';
-
 import {getFoundProducts, isFoundProductsLoading, isFoundProductsSuccess} from '../../../store/search/search-selectors';
 import {fetchFoundProducts} from '../../../store/search/search-api-actions';
 import {setFoundProducts, setFoundProductsStatus} from '../../../store/search/search-actions';
-import {DEBOUNCE_DELAY, KeyAttributeValue, SearchParamPostfix, SearchParamKey, AppRoute} from '../../../constants';
-import {StatusType} from '../../../enums';
-import {addClassModifier} from '../../../utils';
+import {addClassModifier} from '../../../utils/utils';
+import {StatusType} from '../../../common/enums';
+import {DEBOUNCE_DELAY, KeyAttributeValue, SearchParamPostfix, SearchParamKey, AppRoute} from '../../../common/constants';
 
 function SearchForm(): JSX.Element {
   const [isSelectListOpen, setIsSelectListOpen] = useState(false);

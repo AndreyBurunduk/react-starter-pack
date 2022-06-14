@@ -1,7 +1,8 @@
 import {createReducer} from '@reduxjs/toolkit';
 import {setFoundProducts, setFoundProductsStatus} from './search-actions';
-import {StatusType} from '../../enums';
+import {StatusType} from '../../common/enums';
 import {SearchState} from '../../types/state';
+
 const searchInitialState: SearchState = {
   foundProducts: [],
   status: StatusType.Idle,
@@ -15,5 +16,4 @@ const searchReducer = createReducer(searchInitialState, (builder) => {
       state.status = action.payload.status;
     });
 });
-
 export {searchInitialState, searchReducer};

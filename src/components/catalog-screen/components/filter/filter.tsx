@@ -2,21 +2,11 @@ import {KeyboardEvent, ChangeEvent, useEffect, useState, FormEvent} from 'react'
 import {useHistory, useLocation} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {useDebounce} from 'use-debounce';
-import {getPriceRange} from '../../store/filter/filter-selectors';
-import {fetchPriceRange} from '../../store/filter/filter-api-actions';
-import {EssenceType, GuitarType, StringCountType} from '../../enums';
-import {APP_LOCALE, DEBOUNCE_DELAY, SearchParamKey, SearchParamPostfix} from '../../constants';
-const GuitarTypeToStringCountMap = new Map([
-  [GuitarType.Acoustic, [StringCountType.Six, StringCountType.Seven, StringCountType.Twelve]],
-  [GuitarType.Electric, [StringCountType.Four, StringCountType.Six, StringCountType.Seven]],
-  [GuitarType.Ukulele, [StringCountType.Four]],
-]);
-const StringCountToGuitarTypeMap = new Map([
-  [StringCountType.Four, [GuitarType.Ukulele, GuitarType.Electric]],
-  [StringCountType.Six, [GuitarType.Acoustic, GuitarType.Electric]],
-  [StringCountType.Seven, [GuitarType.Acoustic, GuitarType.Electric]],
-  [StringCountType.Twelve, [GuitarType.Acoustic]],
-]);
+import {getPriceRange} from '../../../../store/filter/filter-selectors';
+import {fetchPriceRange} from '../../../../store/filter/filter-api-actions';
+import {EssenceType, GuitarType, StringCountType} from '../../../../common/enums';
+import {APP_LOCALE, DEBOUNCE_DELAY, SearchParamKey, SearchParamPostfix} from '../../../../common/constants';
+import {GuitarTypeToStringCountMap, StringCountToGuitarTypeMap} from '../../../../common/collections';
 
 const parseURLSearchParams = (
   essenceType: EssenceType,
@@ -26,32 +16,23 @@ const parseURLSearchParams = (
 ) => {
   const stateMap = new Map();
   const values = params.getAll(searchParamKey);
-
   if (essenceType === EssenceType.Current) {
     return values;
   }
-
   values.forEach((value) => stateMap.set(value, typeMap?.get(value as GuitarType | StringCountType)));
-
   if (essenceType === EssenceType.Available) {
     return [...new Set([...stateMap.values()].flat())];
   }
-
   return stateMap;
 };
-
-function CatalogFilter(): JSX.Element {
+function Filter(): JSX.Element {
   const availablePriceRange = useSelector(getPriceRange);
-
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
-
-
   const initialSearchParams = new URLSearchParams(location.search);
   const [searchParams, setSearchParams] = useState(initialSearchParams.toString());
   const [debouncedSearchParams] = useDebounce(searchParams, DEBOUNCE_DELAY);
-
   const initialStatePriceRange = {
     min: initialSearchParams.has(SearchParamKey.Price.concat(SearchParamPostfix.Gte))
       ? Number(initialSearchParams.get(SearchParamKey.Price.concat(SearchParamPostfix.Gte)))
@@ -60,28 +41,20 @@ function CatalogFilter(): JSX.Element {
       ? Number(initialSearchParams.get(SearchParamKey.Price.concat(SearchParamPostfix.Lte)))
       : null,
   };
-
   const [priceRange, setPriceRange] = useState(initialStatePriceRange);
   const [debouncedPriceRange] = useDebounce(priceRange, DEBOUNCE_DELAY);
-
   const initialStateCurrentGuitarTypes = parseURLSearchParams(EssenceType.Current, initialSearchParams, SearchParamKey.Type) as GuitarType[];
   const [currentGuitarTypes, setCurrentGuitarTypes] = useState<GuitarType[]>(initialStateCurrentGuitarTypes);
-
   const initialStateCurrentStringCounts = parseURLSearchParams(EssenceType.Current, initialSearchParams, SearchParamKey.StringCount) as StringCountType[];
   const [currentStringCounts, setCurrentStringCounts] = useState<StringCountType[]>(initialStateCurrentStringCounts);
-
   const initialStateAvailableGuitarTypes = parseURLSearchParams(EssenceType.Available, initialSearchParams, SearchParamKey.StringCount, StringCountToGuitarTypeMap) as GuitarType[];
   const [availableGuitarTypes, setAvailableGuitarTypes] = useState<GuitarType[]>(initialStateAvailableGuitarTypes);
-
   const initialStateAvailableStringCounts = parseURLSearchParams(EssenceType.Available, initialSearchParams, SearchParamKey.Type, GuitarTypeToStringCountMap) as StringCountType[];
   const [availableStringCounts, setAvailableStringCounts] = useState<StringCountType[]>(initialStateAvailableStringCounts);
-
   const initialStateCurrentGuitarTypeMap = parseURLSearchParams(EssenceType.StateMap, initialSearchParams, SearchParamKey.Type, GuitarTypeToStringCountMap) as Map<GuitarType, StringCountType[]>;
   const [guitarTypeMap, setGuitarTypeMap] = useState(() => initialStateCurrentGuitarTypeMap);
-
   const initialStateCurrentStringCountMap = parseURLSearchParams(EssenceType.StateMap, initialSearchParams, SearchParamKey.StringCount, StringCountToGuitarTypeMap) as Map<StringCountType, GuitarType[]>;
   const [stringCountMap, setStringCountMap] = useState(() => initialStateCurrentStringCountMap);
-
   const handleOnlyNumberKeyPress = (evt: KeyboardEvent<HTMLInputElement>) => {
     if (!/\d/.test(evt.key)) {
       evt.preventDefault();
@@ -118,20 +91,16 @@ function CatalogFilter(): JSX.Element {
   };
   const handleGuitarTypeChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const checkbox = evt.currentTarget;
-
     setCurrentGuitarTypes(checkbox.checked
       ? [...currentGuitarTypes, checkbox.name as GuitarType]
       : currentGuitarTypes.filter((type) => type !== checkbox.name));
   };
-
   const handleStringCountChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const checkbox = evt.currentTarget;
-
     setCurrentStringCounts(checkbox.checked
       ? [...currentStringCounts, checkbox.dataset.stringCount as StringCountType]
       : currentStringCounts.filter((stringCount) => stringCount !== checkbox.dataset.stringCount));
   };
-
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     params.delete(SearchParamKey.Price.concat(SearchParamPostfix.Gte));
@@ -158,15 +127,12 @@ function CatalogFilter(): JSX.Element {
       }
     }
   }, [availablePriceRange.min, availablePriceRange.max, priceRange.min]);
-
   useEffect(() => {
     setAvailableGuitarTypes(() => [...new Set([...stringCountMap.values()].flat())] as GuitarType[]);
   }, [stringCountMap.size]);
-
   useEffect(() => {
     setAvailableStringCounts(() => [...new Set([...guitarTypeMap.values()].flat())]);
   }, [guitarTypeMap.size]);
-
   useEffect(() => {
     if (availableGuitarTypes.length) {
       setCurrentGuitarTypes(currentGuitarTypes.filter((guitarType) => availableGuitarTypes.includes(guitarType)));
@@ -175,7 +141,6 @@ function CatalogFilter(): JSX.Element {
       setCurrentStringCounts(currentStringCounts.filter((stringCount) => availableStringCounts.includes(stringCount)));
     }
   }, [availableGuitarTypes.length, availableStringCounts.length]);
-
   useEffect(() => {
     setGuitarTypeMap(() => {
       guitarTypeMap.clear();
@@ -186,7 +151,6 @@ function CatalogFilter(): JSX.Element {
       return guitarTypeMap;
     });
   }, [currentGuitarTypes.length, guitarTypeMap.size]);
-
   useEffect(() => {
     setStringCountMap(() => {
       stringCountMap.clear();
@@ -197,28 +161,22 @@ function CatalogFilter(): JSX.Element {
       return stringCountMap;
     });
   }, [currentStringCounts.length, stringCountMap.size]);
-
   useEffect(() => {
     const params = new URLSearchParams();
-
     if (debouncedPriceRange.min
       && debouncedPriceRange.min >= availablePriceRange.min
       && debouncedPriceRange.min <= availablePriceRange.max) {
       params.append(SearchParamKey.Price.concat(SearchParamPostfix.Gte), debouncedPriceRange.min.toString());
     }
-
     if (debouncedPriceRange.max
       && debouncedPriceRange.max >= availablePriceRange.min
       && debouncedPriceRange.max <= availablePriceRange.max) {
       params.append(SearchParamKey.Price.concat(SearchParamPostfix.Lte), debouncedPriceRange.max.toString());
     }
-
     currentGuitarTypes.forEach((guitarType) => params.append(SearchParamKey.Type, guitarType));
     currentStringCounts.forEach((stringCount) => params.append(SearchParamKey.StringCount, stringCount));
-
     setSearchParams(params.toString());
   }, [debouncedPriceRange.max, debouncedPriceRange.min, availablePriceRange.max, availablePriceRange.min, currentGuitarTypes.length, currentStringCounts.length]);
-
   useEffect(() => {
     history.replace({
       pathname: location.pathname,
@@ -226,7 +184,6 @@ function CatalogFilter(): JSX.Element {
       hash: location.hash,
     });
   }, [debouncedSearchParams]);
-
   return (
     <form className="catalog-filter">
       <h2 className="title title--bigger catalog-filter__title">Фильтр</h2>
@@ -358,4 +315,4 @@ function CatalogFilter(): JSX.Element {
     </form>
   );
 }
-export default CatalogFilter;
+export default Filter;

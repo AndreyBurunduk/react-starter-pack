@@ -1,28 +1,24 @@
-import {OrderType, SortType, StatusType} from '../enums';
+
 import {Product} from './product';
 import {Review} from './review';
-import {Namespace} from '../constants';
-
+import {OrderType, SortType, StatusType} from '../common/enums';
+import {Namespace} from '../common/constants';
 
 type ProductState = {
   product: Product | null,
   status: StatusType,
 };
-
 type ReviewsState = {
   reviews: Review[],
   totalCount: number,
   status: StatusType,
   postStatus: StatusType,
 };
-
-
 type ProductsState = {
   products: Product[],
   totalCount: number,
   status: StatusType,
 };
-
 type SearchState = {
   foundProducts: Product[],
   status: StatusType,
@@ -47,5 +43,4 @@ type State = {
   [Namespace.Sort]: SortState,
   [Namespace.Filter]: FilterState,
 };
-
 export type {ProductState, ReviewsState, ProductsState, SearchState, SortState, PriceRangeState, FilterState, State};

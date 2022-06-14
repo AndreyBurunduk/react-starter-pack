@@ -1,11 +1,11 @@
 import {FormEvent, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {postReview} from '../../store/reviews/reviews-api-actions';
-import Modal from '../modals/modal/modal';
-import {ReviewPost} from '../../types/review';
-import {isReviewLoading, isReviewSuccess} from '../../store/reviews/reviews-selectors';
-import {setReviewStatus} from '../../store/reviews/reviews-actions';
-import {StatusType} from '../../enums';
+import {postReview} from '../../../store/reviews/reviews-api-actions';
+import Modal from '../modal/modal';
+import {ReviewPost} from '../../../types/review';
+import {isReviewLoading, isReviewSuccess} from '../../../store/reviews/reviews-selectors';
+import {setReviewStatus} from '../../../store/reviews/reviews-actions';
+import {StatusType} from '../../../common/enums';
 
 const getReviewInitialState = (productId: number): ReviewPost => ({
   userName: '',

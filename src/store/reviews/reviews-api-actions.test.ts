@@ -7,8 +7,8 @@ import {setFetchedReviews, setReview, setReviewsStatus, setReviewStatus, setRevi
 import {fetchReviews, postReview} from './reviews-api-actions';
 import {State} from '../../types/state';
 import {createMockReview, createMockReviews} from '../../mocks/reviews';
-import {APIRoute, RESPONSE_HEADER_X_TOTAL_COUNT} from '../../constants';
-import {StatusType} from '../../enums';
+import {StatusType} from '../../common/enums';
+import {APIRoute, RESPONSE_HEADER_X_TOTAL_COUNT} from '../../common/constants';
 
 const api = createAPI();
 const mockAPI = new MockAdapter(api);
@@ -18,17 +18,13 @@ const mockReviews = createMockReviews();
 const mockReview = createMockReview();
 const mockHeaders = {[RESPONSE_HEADER_X_TOTAL_COUNT]: mockReviews.length};
 const mockProductId = 1;
-
 describe('Async API actions: reviews', () => {
   it('should dispatch setFetchedReviews, setReviewsTotalCount and setReviewsStatus when GET /guitars/productId:/comments', async () => {
     const store = mockStore();
-
     mockAPI
       .onGet(APIRoute.GetReviews(mockProductId))
       .reply(200, mockReviews, mockHeaders);
-
     await store.dispatch(fetchReviews(mockProductId));
-
     expect(store.getActions()).toEqual([
       setReviewsStatus(StatusType.Loading),
       setFetchedReviews(mockReviews),
@@ -36,16 +32,12 @@ describe('Async API actions: reviews', () => {
       setReviewsStatus(StatusType.Success),
     ]);
   });
-
   it('should dispatch setReview and setReviewStatus when POST /comments', async () => {
     const store = mockStore();
-
     mockAPI
       .onPost(APIRoute.PostReview())
       .reply(200, mockReview);
-
     await store.dispatch(postReview(mockReview));
-
     expect(store.getActions()).toEqual([
       setReviewStatus(StatusType.Loading),
       setReview(mockReview),

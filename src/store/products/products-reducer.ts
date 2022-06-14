@@ -1,6 +1,6 @@
 import {createReducer} from '@reduxjs/toolkit';
 import {setProducts, setProductsStatus, setProductsTotalCount} from './products-actions';
-import {StatusType} from '../../enums';
+import {StatusType} from '../../common/enums';
 import {ProductsState} from '../../types/state';
 
 const productsInitialState: ProductsState = {
@@ -8,7 +8,6 @@ const productsInitialState: ProductsState = {
   totalCount: 0,
   status: StatusType.Idle,
 };
-
 const productsReducer = createReducer(productsInitialState, (builder) => {
   builder
     .addCase(setProducts, (state, action) => {

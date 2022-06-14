@@ -7,8 +7,8 @@ import {fetchPriceRange} from './filter-api-actions';
 import {setPriceRangeMax, setPriceRangeMin, setPriceRangeStatus} from './filter-actions';
 import {State} from '../../types/state';
 import {createMockProduct} from '../../mocks/products';
-import {APIRoute} from '../../constants';
-import {StatusType} from '../../enums';
+import {APIRoute} from '../../common/constants';
+import {StatusType} from '../../common/enums';
 
 const api = createAPI();
 const mockAPI = new MockAdapter(api);
@@ -18,7 +18,6 @@ const store = mockStore();
 const mockProductFirst = createMockProduct();
 const mockProductSecond = createMockProduct();
 const mockSearchParams = new URLSearchParams('');
-
 describe('Async API actions: filter', () => {
   it('should dispatch setPriceRangeMin, setPriceRangeMax and setPriceRangeStatus when GET /guitars', async () => {
     mockAPI
@@ -26,9 +25,7 @@ describe('Async API actions: filter', () => {
       .replyOnce(200, [mockProductFirst])
       .onGet(APIRoute.GetProducts())
       .replyOnce(200, [mockProductSecond]);
-
     await store.dispatch(fetchPriceRange(mockSearchParams));
-
     expect(store.getActions()).toEqual([
       setPriceRangeStatus(StatusType.Loading),
       setPriceRangeMin(mockProductFirst.price),

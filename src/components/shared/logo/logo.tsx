@@ -1,25 +1,22 @@
 import {MouseEvent} from 'react';
 import {Link, useLocation} from 'react-router-dom';
-import {AppRoute} from '../../../constants';
+import {AppRoute} from '../../../common/constants';
 
 type LogoProps = {
   className?: string;
 }
-
-function Logo({className}: LogoProps): JSX.Element {
+function Logo({className = 'header'}: LogoProps): JSX.Element {
   const location = useLocation();
   const isMainScreenRoute = location.pathname === AppRoute.MainScreen;
-
   const handleLinkClick = (evt: MouseEvent<HTMLAnchorElement>) => {
     if (isMainScreenRoute) {
       evt.preventDefault();
     }
   };
-
   return (
     <Link
       onClick={handleLinkClick}
-      className={`${className = 'header'}__logo logo`}
+      className={`${className}__logo logo`}
       style={{pointerEvents: `${isMainScreenRoute ? 'none' : 'auto'}`}}
       to={AppRoute.MainScreen}
     >
@@ -33,5 +30,4 @@ function Logo({className}: LogoProps): JSX.Element {
     </Link>
   );
 }
-
 export default Logo;

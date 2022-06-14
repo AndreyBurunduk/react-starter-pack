@@ -1,31 +1,34 @@
-import {productInitialState, productReducer} from './products-reducer';
-import {createMockProduct} from '../../mocks/products';
-import {setProduct, setProductStatus} from './products-actions';
-import {StatusType} from '../../enums';
+import {Action} from 'redux';
+import thunk, {ThunkDispatch} from 'redux-thunk';
+import MockAdapter from 'axios-mock-adapter';
+import {configureMockStore} from '@jedmao/redux-mock-store';
+import {createAPI} from '../../service/api';
+import {setProducts, setProductsStatus, setProductsTotalCount} from './products-actions';
+import {fetchProducts} from './products-api-actions';
+import {State} from '../../types/state';
+import {createMockProducts} from '../../mocks/products';
+import {APIRoute, RESPONSE_HEADER_X_TOTAL_COUNT} from '../../common/constants';
+import {StatusType} from '../../common/enums';
 
-const mockActionType = 'UNKNOWN_ACTION';
-const mockProduct = createMockProduct();
-const mockFetchStatus = StatusType.Success;
-
-describe('Reducer: product', () => {
-  it('without additional parameters should return initial state', () => {
-    expect(productReducer(void 0, {type: mockActionType}))
-      .toEqual(productInitialState);
-  });
-
-  it('should set product', () => {
-    expect(productReducer(productInitialState, setProduct(mockProduct)))
-      .toEqual({
-        ...productInitialState,
-        product: mockProduct,
-      });
-  });
-
-  it('should set fetch status', () => {
-    expect(productReducer(productInitialState, setProductStatus(mockFetchStatus)))
-      .toEqual({
-        ...productInitialState,
-        status: mockFetchStatus,
-      });
+const api = createAPI();
+const mockAPI = new MockAdapter(api);
+const middlewares = [thunk.withExtraArgument(api)];
+const mockStore = configureMockStore<State, Action, ThunkDispatch<State, typeof api, Action>>(middlewares);
+const store = mockStore();
+const mockProducts = createMockProducts();
+const mockHeaders = {[RESPONSE_HEADER_X_TOTAL_COUNT]: mockProducts.length};
+const mockSearchParams = new URLSearchParams('');
+describe('Async API actions: products', () => {
+  it('should dispatch setProducts, setProductsTotalCount and setProductsStatus when GET /guitars', async () => {
+    mockAPI
+      .onGet(APIRoute.GetProducts())
+      .reply(200, mockProducts, mockHeaders);
+    await store.dispatch(fetchProducts(mockSearchParams));
+    expect(store.getActions()).toEqual([
+      setProductsStatus(StatusType.Loading),
+      setProducts(mockProducts),
+      setProductsTotalCount(Number(mockHeaders[RESPONSE_HEADER_X_TOTAL_COUNT])),
+      setProductsStatus(StatusType.Success),
+    ]);
   });
 });

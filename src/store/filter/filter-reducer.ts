@@ -1,7 +1,7 @@
 import {createReducer} from '@reduxjs/toolkit';
 import {setPriceRangeMin, setPriceRangeMax, setPriceRangeStatus} from './filter-actions';
 import {FilterState} from '../../types/state';
-import {StatusType} from '../../enums';
+import {StatusType} from '../../common/enums';
 
 const filterInitialState: FilterState = {
   priceRange: {
@@ -10,7 +10,6 @@ const filterInitialState: FilterState = {
   },
   status: StatusType.Idle,
 };
-
 const filterReducer = createReducer(filterInitialState, (builder) => {
   builder
     .addCase(setPriceRangeMin, (state, action) => {
@@ -23,5 +22,4 @@ const filterReducer = createReducer(filterInitialState, (builder) => {
       state.status = action.payload.status;
     });
 });
-
 export {filterInitialState, filterReducer};

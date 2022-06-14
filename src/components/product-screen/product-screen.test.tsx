@@ -5,14 +5,13 @@ import {configureMockStore} from '@jedmao/redux-mock-store';
 import {createMemoryHistory} from 'history';
 import {createMockProduct} from '../../mocks/products';
 import ProductScreen from './product-screen';
-import {Namespace} from '../../constants';
-import {StatusType} from '../../enums';
+import {Namespace} from '../../common/constants';
+import {StatusType} from '../../common/enums';
 import 'intersection-observer';
 
 const mockProduct = createMockProduct();
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
-
 const store = mockStore({
   [Namespace.Product]: {
     product: mockProduct,
@@ -29,10 +28,8 @@ const store = mockStore({
     status: StatusType.Idle,
   },
 });
-
 describe('Component: ProductScreen', () => {
   store.dispatch = jest.fn();
-
   it('should render correctly', () => {
     render(
       <Provider store={store}>
@@ -40,7 +37,6 @@ describe('Component: ProductScreen', () => {
           <ProductScreen />
         </Router>
       </Provider>);
-
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(new RegExp(mockProduct.name,'i'));
   });
 });

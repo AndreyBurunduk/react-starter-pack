@@ -1,10 +1,9 @@
 import {Link, useLocation} from 'react-router-dom';
-import {AppRoute} from '../../constants';
+import {AppRoute} from '../../common/constants';
 import './style.css';
 
 function NotFoundScreen(): JSX.Element {
   const location = useLocation();
-
   return (
     <div className="wrapper-404">
       <h1 className="title-404" data-text="404">404</h1>
@@ -17,5 +16,4 @@ function NotFoundScreen(): JSX.Element {
     </div>
   );
 }
-
 export default NotFoundScreen;

@@ -1,5 +1,5 @@
 import {createAction} from '@reduxjs/toolkit';
-import {ActionType, StatusType} from '../../enums';
+import {ActionType, StatusType} from '../../common/enums';
 import {Product} from '../../types/product';
 
 const setProduct = createAction(
@@ -10,7 +10,6 @@ const setProduct = createAction(
     },
   }),
 );
-
 const setProductStatus = createAction(
   ActionType.SetProductStatus,
   (status: StatusType) => ({
@@ -19,5 +18,4 @@ const setProductStatus = createAction(
     },
   }),
 );
-
 export {setProduct, setProductStatus};

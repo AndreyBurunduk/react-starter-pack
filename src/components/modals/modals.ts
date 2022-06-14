@@ -1,2 +1,4 @@
-export {default as ModalReviewForm} from './review-form/review-form';
-export {default as ModalReviewSuccessMessage} from './review-success-message/review-success-message';
+export {default as ModalReviewAdd} from './review-add/review-add';
+export {default as ModalReviewAddSuccess} from './review-add-success/review-add-success';
+export {default as ModalCartAdd} from './cart-add/cart-add';
+export {default as ModalCartAddSuccess} from './cart-add-success/cart-add-success';

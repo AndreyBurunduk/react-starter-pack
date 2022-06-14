@@ -1,32 +1,26 @@
 import {MouseEvent} from 'react';
-import {SortType, OrderType} from '../../enums';
 import {useDispatch, useSelector} from 'react-redux';
-import {addClassModifier} from '../../utils';
-import {setOrderType, setSortType} from '../../store/sort/sort-action';
-import {getOrderType, getSortType} from '../../store/sort/sort-selectors';
+import {setOrderType, setSortType} from '../../../../store/sort/sort-action';
+import {getOrderType, getSortType} from '../../../../store/sort/sort-selectors';
+import {addClassModifier} from '../../../../utils/utils';
+import {SortType, OrderType} from '../../../../common/enums';
 
-function CatalogSort(): JSX.Element {
+function Sort(): JSX.Element {
   const sortType = useSelector(getSortType);
   const orderType = useSelector(getOrderType);
-
   const dispatch = useDispatch();
-
   const handleSortButtonClick = (evt: MouseEvent<HTMLButtonElement>) => {
     dispatch(setSortType(evt.currentTarget.dataset.sort as SortType));
-
     if (!orderType) {
       dispatch(setOrderType(OrderType.Ascending));
     }
   };
-
   const handleOrderButtonClick = (evt: MouseEvent<HTMLButtonElement>) => {
     dispatch(setOrderType(evt.currentTarget.dataset.order as OrderType));
-
     if (!sortType) {
       dispatch(setSortType(SortType.Price));
     }
   };
-
   return (
     <div className="catalog-sort">
       <h2 className="catalog-sort__title">Сортировать:</h2>
@@ -67,4 +61,4 @@ function CatalogSort(): JSX.Element {
     </div>
   );
 }
-export default CatalogSort;
+export default Sort;

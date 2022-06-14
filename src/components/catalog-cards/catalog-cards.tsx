@@ -6,8 +6,8 @@ import {getOrderType, getSortType} from '../../store/sort/sort-selectors';
 import {fetchProducts} from '../../store/products/products-api-actions';
 import ProductCard from '../product-card/product-card';
 import {ReactComponent as ProductCardSkeleton} from '../../assets/skeleton-card.svg';
-import {createIndexList} from '../../utils';
-import {PRODUCTS_COUNT_PER_PAGE, SearchParamPostfix} from '../../constants';
+import {createIndexList} from '../../utils/utils';
+import {PRODUCTS_COUNT_PER_PAGE, SearchParamPostfix} from '../../common/constants';
 function CatalogCards(): JSX.Element {
   const {pageId} = useParams<{pageId: string}>();
   const cardIndex = pageId ? (parseInt(pageId, 10) - 1) * PRODUCTS_COUNT_PER_PAGE : 0;

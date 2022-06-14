@@ -1,8 +1,8 @@
 import {Provider} from 'react-redux';
 import {render, screen} from '@testing-library/react';
 import {configureMockStore} from '@jedmao/redux-mock-store';
-import CatalogSort from './catalog-sort';
-import {Namespace} from '../../constants';
+import Sort from './sort';
+import {Namespace} from '../../../../common/constants';
 
 const mockStore = configureMockStore();
 
@@ -12,14 +12,12 @@ const store = mockStore({
     orderType: null,
   },
 });
-
-describe('Component: CatalogSort', () => {
+describe('Component: Sort', () => {
   it('should render correctly', () => {
     render(
       <Provider store={store}>
-        <CatalogSort />
+        <Sort />
       </Provider>);
-
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(/Сортировать/i);
     expect(screen.getByRole('button', {name: /по цене/i})).toBeInTheDocument();
     expect(screen.getByRole('button', {name: /по популярности/i})).toBeInTheDocument();

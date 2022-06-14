@@ -1,5 +1,5 @@
 import {createAction} from '@reduxjs/toolkit';
-import {ActionType, StatusType} from '../../enums';
+import {ActionType, StatusType} from '../../common/enums';
 import {Review} from '../../types/review';
 
 const setReview = createAction(
@@ -10,7 +10,6 @@ const setReview = createAction(
     },
   }),
 );
-
 const setReviewStatus = createAction(
   ActionType.SetReviewStatus,
   (postStatus: StatusType) => ({
@@ -19,7 +18,6 @@ const setReviewStatus = createAction(
     },
   }),
 );
-
 const setReviews = createAction(
   ActionType.SetReviews,
   (reviews: Review[]) => ({
@@ -28,7 +26,6 @@ const setReviews = createAction(
     },
   }),
 );
-
 const setFetchedReviews = createAction(
   ActionType.SetFetchedReviews,
   (reviews: Review[]) => ({
@@ -37,7 +34,6 @@ const setFetchedReviews = createAction(
     },
   }),
 );
-
 const setReviewsTotalCount = createAction(
   ActionType.SetReviewsTotalCount,
   (totalCount: number) => ({
@@ -46,7 +42,6 @@ const setReviewsTotalCount = createAction(
     },
   }),
 );
-
 const setReviewsStatus = createAction(
   ActionType.SetReviewsStatus,
   (status: StatusType) => ({
@@ -55,5 +50,4 @@ const setReviewsStatus = createAction(
     },
   }),
 );
-
 export {setReview, setReviewStatus, setReviews, setFetchedReviews, setReviewsTotalCount, setReviewsStatus};
