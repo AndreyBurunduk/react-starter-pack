@@ -1,10 +1,10 @@
-import Header from '../header/header';
-import Breadcrumbs from '../breadcrumbs/breadcrumbs';
+import Header from '../shared/header/header';
+import Breadcrumbs from '../shared/breadcrumbs/breadcrumbs';
 import CatalogFilter from '../catalog-filter/catalog-filter';
 import CatalogSort from '../catalog-sort/catalog-sort';
 import CatalogCards from '../catalog-cards/catalog-cards';
-import Pagination from '../pagination/pagination';
-import Footer from '../footer/footer';
+import Pagination from '../shared/pagination/pagination';
+import Footer from '../shared/footer/footer';
 
 function CatalogScreen(): JSX.Element {
   return (

@@ -5,9 +5,9 @@ import ReactRouter from 'react-router';
 import {Router} from 'react-router-dom';
 import Pagination from './pagination';
 import {createMemoryHistory} from 'history';
-import {StatusType} from '../../enums';
-import {Namespace} from '../../constants';
-import {createMockProducts} from '../../mocks/products';
+import {StatusType} from '../../../enums';
+import {Namespace} from '../../../constants';
+import {createMockProducts} from '../../../mocks/products';
 
 const history = createMemoryHistory();
 const mockStore = configureMockStore();

@@ -1126,7 +1126,7 @@ button,
   flex-grow: 1;
   justify-content: start;
 
-  padding-top: 20px;
+  padding-top: 70px;
 }
 
 .modal__button-container .modal__button {
@@ -1325,7 +1325,7 @@ button,
   line-height: 19px;
 
   color: #fefafa;
-  border: 2px solid #131212;
+  border: 1px solid #131212;
   border-radius: 2px;
   background-color: #131212;
 
@@ -1400,7 +1400,7 @@ button,
 
 .button--black-border {
   color: #201f1f;
-  border: 1px solid #131212;
+  border: 2px solid #131212;
   background-color: #fefafa;
 }
 

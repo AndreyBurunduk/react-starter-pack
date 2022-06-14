@@ -37,6 +37,7 @@ ReactDOM.render(
       theme={ToastParam.Theme}
       position={ToastParam.Position}
     />
+
   </React.StrictMode>,
   document.getElementById('root'),
 );
