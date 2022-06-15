@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {MouseEvent, useEffect, useState} from 'react';
 import {Link, Redirect, useLocation, useParams} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {getProduct, isProductFailure, isProductIdle, isProductLoading, isProductNotFound} from '../../store/product/product-selectors';
@@ -7,16 +7,19 @@ import {fetchProduct} from '../../store/product/product-api-actions';
 import {setProductStatus} from '../../store/product/product-actions';
 import {Header, Breadcrumbs, Rate, Footer} from '../shared/shared';
 import {Reviews} from './components/components';
+import {ModalCartAdd, ModalCartAddSuccess} from '../modals/modals';
 import LoadingScreen from '../loading-screen/loadingScreen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import {addClassModifier} from '../../utils/utils';
-import {GuitarType, StatusType} from '../../common/enums';
-import {APP_LOCALE, AppRoute} from '../../common/constants';
 import {GuitarTypeToTranslationMap} from '../../common/collections';
+import {GuitarType, StatusType} from '../../common/enums';
+import {APP_LOCALE, AppRoute, FOCUS_TIMEOUT, TRANSITION_DELAY} from '../../common/constants';
 
 function ProductScreen(): JSX.Element {
   const {productId} = useParams<{productId: string}>();
   const {hash} = useLocation();
+  const dispatch = useDispatch();
+
   const product = useSelector(getProduct);
   const isIdleStatus = useSelector(isProductIdle);
   const isLoadingStatus = useSelector(isProductLoading);
@@ -24,23 +27,51 @@ function ProductScreen(): JSX.Element {
   const isNotFoundStatus = useSelector(isProductNotFound);
   const reviewsCount = useSelector(getReviewsTotalCount);
   const isReviewsSuccessStatus = useSelector(isReviewsSuccess);
-  const dispatch = useDispatch();
+
+  const [isProductAdded, setIsProductAdded] = useState<boolean>(false);
+  const [isModalCartAddOpen, setIsModalCartAddOpen] = useState<boolean>(false);
+  const [isModalCartAddSuccessOpen, setIsModalCartAddSuccessOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (isProductAdded) {
+      setTimeout(() => {
+        setIsModalCartAddSuccessOpen(true);
+      }, FOCUS_TIMEOUT + TRANSITION_DELAY);
+    }
+
+    return () => {
+      setIsProductAdded(false);
+    };
+  }, [isProductAdded]);
+
+  const handleAddToCartLinkClick = (evt: MouseEvent<HTMLAnchorElement>) => {
+    evt.preventDefault();
+
+    setIsModalCartAddOpen(true);
+  };
+
   useEffect(() => {
     dispatch(fetchProduct(Number(productId)));
+
     return () => {
       dispatch(setProductStatus(StatusType.Idle));
     };
   }, [dispatch, productId]);
+
   if (isFailureStatus) {
     return <Redirect to={AppRoute.MainScreen} />;
   }
+
   if (isNotFoundStatus) {
     return <NotFoundScreen />;
   }
+
   if (product === null || isIdleStatus || isLoadingStatus) {
     return <LoadingScreen />;
   }
+
   const {id, name, vendorCode, type, description, previewImg, stringCount, rating, price} = product;
+
   return (
     <div className="wrapper">
       <Header />
@@ -103,7 +134,12 @@ function ProductScreen(): JSX.Element {
             <div className="product-container__price-wrapper">
               <p className="product-container__price-info product-container__price-info--title">Цена:</p>
               <p className="product-container__price-info product-container__price-info--value">{price.toLocaleString(APP_LOCALE)} ₽</p>
-              <Link to="#" className="button button--red button--big product-container__button">Добавить в корзину</Link>
+              <Link
+                onClick={handleAddToCartLinkClick}
+                className="button button--red button--big product-container__button"
+                to={AppRoute.CartScreen}
+              >Добавить в корзину
+              </Link>
             </div>
           </div>
           <Reviews
@@ -113,7 +149,18 @@ function ProductScreen(): JSX.Element {
         </div>
       </main>
       <Footer />
+      <ModalCartAdd
+        isModalOpen={isModalCartAddOpen}
+        onModalOpenSelect={setIsModalCartAddOpen}
+        onAddToCartButtonClick={setIsProductAdded}
+        product={product}
+      />
+      <ModalCartAddSuccess
+        isModalOpen={isModalCartAddSuccessOpen}
+        onModalOpenSelect={setIsModalCartAddSuccessOpen}
+      />
     </div>
   );
 }
+
 export default ProductScreen;

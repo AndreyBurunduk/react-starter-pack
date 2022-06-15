@@ -25,6 +25,7 @@ const fetchReviews = (productId: number, reviewId = 0): ThunkActionResult => (
       });
   }
 );
+
 const postReview = (review: ReviewPost): ThunkActionResult => (
   async (dispatch, _getState, api): Promise<void> => {
     dispatch(setReviewStatus(StatusType.Loading));
@@ -42,4 +43,5 @@ const postReview = (review: ReviewPost): ThunkActionResult => (
       });
   }
 );
+
 export {fetchReviews, postReview};

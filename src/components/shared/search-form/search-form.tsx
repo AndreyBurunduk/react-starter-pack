@@ -13,29 +13,38 @@ function SearchForm(): JSX.Element {
   const [isSelectListOpen, setIsSelectListOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const [searchValue, setSearchValue] = useState('');
+
   const [debouncedSearchValue] = useDebounce(searchValue, DEBOUNCE_DELAY);
   const selectElements = useRef<Record<number, HTMLLIElement>>({});
+
   const foundProducts = useSelector(getFoundProducts);
   const isLoadingStatus = useSelector(isFoundProductsLoading);
   const isSuccessStatus = useSelector(isFoundProductsSuccess);
+
   const history = useHistory();
   const dispatch = useDispatch();
+
   let timer: number | null = null;
+
   const handleFormFocus = () => {
     setIsSelectListOpen(true);
+
     if (timer) {
       clearTimeout(timer);
     }
   };
+
   const handleFormBlur = () => {
     timer = setTimeout(() => {
       setIsSelectListOpen(false);
       setHighlightedIndex(-1);
     });
   };
+
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
   };
+
   const handleFormKeydown = (evt: KeyboardEvent) => {
     switch (evt.code) {
       case KeyAttributeValue.ArrowDown:
@@ -64,27 +73,33 @@ function SearchForm(): JSX.Element {
         break;
     }
   };
+
   const handleInputChange = (evt: FormEvent<HTMLInputElement>) => {
     setSearchValue(evt.currentTarget.value);
     setHighlightedIndex(-1);
   };
+
   const handleSelectElementMouseEnter = (index: number) => () => {
     setHighlightedIndex(index);
   };
+
   const handleSelectElementClick = (id: number) => () => {
     history.push(`${AppRoute.ProductScreenPrefix}${id}`);
   };
+
   useEffect(() => {
     if (debouncedSearchValue) {
       dispatch(fetchFoundProducts(new URLSearchParams({
         [SearchParamKey.Name.concat(SearchParamPostfix.Like)]: debouncedSearchValue,
       })));
     }
+
     return () => {
       dispatch(setFoundProducts([]));
       dispatch(setFoundProductsStatus(StatusType.Idle));
     };
   }, [dispatch, debouncedSearchValue]);
+
   return (
     <div
       onFocus={handleFormFocus}
@@ -150,4 +165,5 @@ function SearchForm(): JSX.Element {
     </div>
   );
 }
+
 export default SearchForm;

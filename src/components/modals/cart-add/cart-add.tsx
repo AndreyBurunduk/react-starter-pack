@@ -1,10 +1,11 @@
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Modal from '../modal/modal';
+import {createProductInCart, updateProductCountInCart} from '../../../store/cart/cart-actions';
+import {getProductInCart} from '../../../store/cart/cart-selectors';
 import {Product} from '../../../types/product';
 import {GuitarType} from '../../../common/enums';
 import {GuitarTypeToTranslationMap} from '../../../common/collections';
 import {APP_LOCALE} from '../../../common/constants';
-import {addProductToCart} from '../../../store/cart/cart-actions';
 
 type CartAddProps = {
   isModalOpen: boolean;
@@ -14,10 +15,16 @@ type CartAddProps = {
 }
 
 function CartAdd({isModalOpen, onModalOpenSelect, onAddToCartButtonClick, product}: CartAddProps): JSX.Element {
+  const productInCart = useSelector(getProductInCart(product ? product.id : 0));
   const dispatch = useDispatch();
 
   const handleButtonClick = () => {
-    product && dispatch(addProductToCart(product));
+    if (product) {
+      productInCart
+        ? dispatch(updateProductCountInCart(product.id, productInCart.count + 1))
+        : dispatch(createProductInCart(product));
+    }
+
     onAddToCartButtonClick(true);
     onModalOpenSelect(false);
   };

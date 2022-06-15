@@ -10,6 +10,7 @@ describe('Component: ReviewSuccessMessage', () => {
         isModalOpen
         onModalOpenSelect={onModalOpenSelect}
       />);
+
     expect(screen.getByText(/Спасибо за ваш отзыв/i)).toBeInTheDocument();
   });
 });

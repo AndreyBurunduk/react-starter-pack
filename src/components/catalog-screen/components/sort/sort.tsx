@@ -8,19 +8,25 @@ import {SortType, OrderType} from '../../../../common/enums';
 function Sort(): JSX.Element {
   const sortType = useSelector(getSortType);
   const orderType = useSelector(getOrderType);
+
   const dispatch = useDispatch();
+
   const handleSortButtonClick = (evt: MouseEvent<HTMLButtonElement>) => {
     dispatch(setSortType(evt.currentTarget.dataset.sort as SortType));
+
     if (!orderType) {
       dispatch(setOrderType(OrderType.Ascending));
     }
   };
+
   const handleOrderButtonClick = (evt: MouseEvent<HTMLButtonElement>) => {
     dispatch(setOrderType(evt.currentTarget.dataset.order as OrderType));
+
     if (!sortType) {
       dispatch(setSortType(SortType.Price));
     }
   };
+
   return (
     <div className="catalog-sort">
       <h2 className="catalog-sort__title">Сортировать:</h2>
@@ -61,4 +67,5 @@ function Sort(): JSX.Element {
     </div>
   );
 }
+
 export default Sort;

@@ -6,9 +6,11 @@ import {createMemoryHistory} from 'history';
 import CatalogScreen from './catalog-screen';
 import {Namespace} from '../../common/constants';
 import {StatusType} from '../../common/enums';
+import {productsAdapter} from '../../store/cart/cart-reducer';
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
+
 const store = mockStore({
   [Namespace.Products]: {
     products: [],
@@ -30,9 +32,14 @@ const store = mockStore({
     },
     status: StatusType.Idle,
   },
+  [Namespace.Cart]: {
+    products: productsAdapter.getInitialState(),
+  },
 });
+
 describe('Component: CatalogScreen', () => {
   store.dispatch = jest.fn();
+
   it('should render correctly', () => {
     render(
       <Provider store={store}>
@@ -40,6 +47,7 @@ describe('Component: CatalogScreen', () => {
           <CatalogScreen />
         </Router>
       </Provider>);
+
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(/Каталог гитар/i);
   });
 });

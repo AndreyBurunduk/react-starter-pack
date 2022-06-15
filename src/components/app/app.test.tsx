@@ -9,12 +9,14 @@ import {createMockReviews} from '../../mocks/reviews';
 import 'intersection-observer';
 import {AppRoute, Namespace} from '../../common/constants';
 import {StatusType} from '../../common/enums';
+import {productsAdapter} from '../../store/cart/cart-reducer';
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
 const mockProducts = createMockProducts();
 const mockProduct = createMockProduct();
 const mockReviews = createMockReviews();
+
 const store = mockStore({
   [Namespace.Product]: {
     product: mockProduct,
@@ -46,7 +48,11 @@ const store = mockStore({
     },
     status: StatusType.Idle,
   },
+  [Namespace.Cart]: {
+    products: productsAdapter.getInitialState(),
+  },
 });
+
 const FakeApp = (
   <Provider store={store}>
     <Router history={history}>
@@ -54,26 +60,42 @@ const FakeApp = (
     </Router>
   </Provider>
 );
+
 describe('Application Routing', () => {
   store.dispatch = jest.fn();
+
   it('should redirect to "CatalogScreen" when user navigate to "/"', () => {
     history.push(AppRoute.MainScreen);
     render(FakeApp);
+
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(/Каталог гитар/i);
   });
+
   it('should render "CatalogScreen" when user navigate to "/catalog"', () => {
     history.push(AppRoute.CatalogScreen);
     render(FakeApp);
+
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(/Каталог гитар/i);
   });
+
   it('should render "ProductScreen" when user navigate to "/products/:productId"', () => {
     history.push(AppRoute.ProductScreenPrefix.concat(mockProduct.id.toString()));
     render(FakeApp);
+
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(new RegExp(mockProduct.name,'i'));
   });
+
+  it('should render "CartScreen" when user navigate to "/cart"', () => {
+    history.push(AppRoute.CartScreen);
+    render(FakeApp);
+
+    expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(/Корзина/i);
+  });
+
   it('should render "NotFoundScreen" when user navigate to non-existent route', () => {
     history.push('/non-existent-route');
     render(FakeApp);
+
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(/404/i);
   });
 });

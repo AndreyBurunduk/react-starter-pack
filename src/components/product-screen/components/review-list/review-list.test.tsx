@@ -14,6 +14,7 @@ const mockReviews = createMockReviews();
 const mockTotalCount = mockReviews.length;
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
+
 const mockSuccessStore = mockStore({
   [Namespace.Reviews]: {
     reviews: mockReviews,
@@ -22,6 +23,7 @@ const mockSuccessStore = mockStore({
     postStatus: StatusType.Idle,
   },
 });
+
 const mockSuccessEmptyStore = mockStore({
   [Namespace.Reviews]: {
     reviews: [],
@@ -30,6 +32,7 @@ const mockSuccessEmptyStore = mockStore({
     postStatus: StatusType.Idle,
   },
 });
+
 const mockLoadingStore = mockStore({
   [Namespace.Reviews]: {
     reviews: [],
@@ -38,6 +41,7 @@ const mockLoadingStore = mockStore({
     postStatus: StatusType.Idle,
   },
 });
+
 const mockFailureStore = mockStore({
   [Namespace.Reviews]: {
     reviews: [],
@@ -46,9 +50,11 @@ const mockFailureStore = mockStore({
     postStatus: StatusType.Idle,
   },
 });
+
 describe('Component: ReviewList', () => {
   it('should render correctly if success', () => {
     mockSuccessStore.dispatch = jest.fn();
+
     render(
       <Provider store={mockSuccessStore}>
         <Router history={history}>
@@ -57,10 +63,13 @@ describe('Component: ReviewList', () => {
           />
         </Router>
       </Provider>);
+
     expect(screen.queryAllByTestId(/review/i)).toHaveLength(mockTotalCount);
   });
+
   it('should render correctly if success but store is empty', () => {
     mockSuccessEmptyStore.dispatch = jest.fn();
+
     render(
       <Provider store={mockSuccessEmptyStore}>
         <Router history={history}>
@@ -69,10 +78,13 @@ describe('Component: ReviewList', () => {
           />
         </Router>
       </Provider>);
+
     expect(screen.getByText(/Отзывы о данном товаре - отсутствуют/i)).toBeInTheDocument();
   });
+
   it('should render correctly if loading and store is empty', () => {
     mockLoadingStore.dispatch = jest.fn();
+
     render(
       <Provider store={mockLoadingStore}>
         <Router history={history}>
@@ -81,10 +93,13 @@ describe('Component: ReviewList', () => {
           />
         </Router>
       </Provider>);
+
     expect(screen.getByText(/Загрузка/i)).toBeInTheDocument();
   });
+
   it('should render correctly if failure and store is empty', () => {
     mockFailureStore.dispatch = jest.fn();
+
     render(
       <Provider store={mockFailureStore}>
         <Router history={history}>
@@ -93,6 +108,7 @@ describe('Component: ReviewList', () => {
           />
         </Router>
       </Provider>);
+
     expect(screen.getByText(/Что-то пошло не так/i)).toBeInTheDocument();
   });
 });

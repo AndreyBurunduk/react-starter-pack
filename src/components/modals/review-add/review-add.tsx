@@ -29,6 +29,7 @@ function ReviewAdd({isModalOpen, onModalOpenSelect, productId, productName}: Rev
 
   const [review, setReview] = useState(getReviewInitialState(productId));
   const [isChanged, setIsChanged] = useState(false);
+
   const dispatch = useDispatch();
 
   const handleFieldChange = (evt: {target: HTMLInputElement | HTMLTextAreaElement}) => {
@@ -37,20 +38,24 @@ function ReviewAdd({isModalOpen, onModalOpenSelect, productId, productName}: Rev
     setReview({...review, [name]: name === 'rating' ? Number(value) : value});
     setIsChanged(true);
   };
+
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(postReview(review));
   };
+
   useEffect(() => {
     if (isSuccessStatus) {
       onModalOpenSelect(false);
       setIsChanged(false);
       setReview(getReviewInitialState(productId));
     }
+
     return () => {
       dispatch(setReviewStatus(StatusType.Idle));
     };
   }, [isSuccessStatus]);
+
   return (
     <Modal
       isModalOpen={isModalOpen}

@@ -1,4 +1,4 @@
-import {useHistory} from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 import Modal from '../modal/modal';
 import {AppRoute, FOCUS_TIMEOUT, TRANSITION_DELAY} from '../../../common/constants';
 
@@ -8,7 +8,10 @@ type CartAddSuccessProps = {
 }
 
 function CartAddSuccess({isModalOpen, onModalOpenSelect}: CartAddSuccessProps): JSX.Element {
+  const location = useLocation();
   const history = useHistory();
+
+  const isCatalogScreenRoute = location.pathname.startsWith(AppRoute.CatalogScreen);
 
   const handleGoToCartButtonClick = () => {
     onModalOpenSelect(false);
@@ -18,8 +21,14 @@ function CartAddSuccess({isModalOpen, onModalOpenSelect}: CartAddSuccessProps): 
     }, FOCUS_TIMEOUT + TRANSITION_DELAY);
   };
 
-  const handleContinueShoppingButtonClick = () => {
+  const handleGoToCatalogButtonClick = () => {
     onModalOpenSelect(false);
+
+    if (!isCatalogScreenRoute) {
+      setTimeout(() => {
+        history.push(AppRoute.CatalogScreen);
+      }, FOCUS_TIMEOUT + TRANSITION_DELAY);
+    }
   };
 
   return (
@@ -39,7 +48,7 @@ function CartAddSuccess({isModalOpen, onModalOpenSelect}: CartAddSuccessProps): 
         >Перейти в корзину
         </button>
         <button
-          onClick={handleContinueShoppingButtonClick}
+          onClick={handleGoToCatalogButtonClick}
           className="button button--black-border button--small modal__button modal__button--right"
         >Продолжить покупки
         </button>

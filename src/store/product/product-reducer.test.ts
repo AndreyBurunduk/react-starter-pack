@@ -6,11 +6,13 @@ import {StatusType} from '../../common/enums';
 const mockActionType = 'UNKNOWN_ACTION';
 const mockProduct = createMockProduct();
 const mockFetchStatus = StatusType.Success;
+
 describe('Reducer: product', () => {
   it('without additional parameters should return initial state', () => {
     expect(productReducer(void 0, {type: mockActionType}))
       .toEqual(productInitialState);
   });
+
   it('should set product', () => {
     expect(productReducer(productInitialState, setProduct(mockProduct)))
       .toEqual({
@@ -18,6 +20,7 @@ describe('Reducer: product', () => {
         product: mockProduct,
       });
   });
+
   it('should set fetch status', () => {
     expect(productReducer(productInitialState, setProductStatus(mockFetchStatus)))
       .toEqual({

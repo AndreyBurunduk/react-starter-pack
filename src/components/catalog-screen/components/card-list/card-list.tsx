@@ -20,10 +20,12 @@ function CardList(): JSX.Element {
         setIsModalCartAddSuccessOpen(true);
       }, FOCUS_TIMEOUT + TRANSITION_DELAY);
     }
+
     return () => {
       setIsProductAddedToCart(false);
     };
   }, [isProductAddedToCart]);
+
   return (
     <>
       {products.map((product) => (

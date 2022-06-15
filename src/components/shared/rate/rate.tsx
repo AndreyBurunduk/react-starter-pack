@@ -9,6 +9,7 @@ type RateProps = {
   rating: number;
   children?: ReactNode;
 }
+
 function Rate({className, width, height, rating, children}: RateProps): JSX.Element {
   return (
     <div className={`rate ${className}`} aria-hidden="true">
@@ -28,4 +29,5 @@ function Rate({className, width, height, rating, children}: RateProps): JSX.Elem
     </div>
   );
 }
+
 export default Rate;

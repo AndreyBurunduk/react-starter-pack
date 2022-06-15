@@ -9,7 +9,6 @@ import {createAPI} from './service/api';
 import App from './components/app/app';
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import {ToastParam} from './common/constants';
 
 const api = createAPI();
@@ -24,7 +23,9 @@ const store = configureStore({
       serializableCheck: false,
     }),
 });
+
 const browserHistory = createBrowserHistory();
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

@@ -757,11 +757,12 @@ button,
 
 .header__cart-count {
   top: -5px;
-  right: -14px;
+  right: 16px;
   position: absolute;
 
-  width: 12px;
+  min-width: 12px;
   height: 12px;
+  padding: 0 3px;
 
   font-family: "Droid Sans", "Arial", sans-serif;
   font-size: 10px;
@@ -1205,6 +1206,10 @@ button,
 
 .title--red {
   color: #c90606;
+}
+
+.title--center {
+  text-align: center;
 }
 
 .catalog {
@@ -3273,9 +3278,10 @@ button,
 }
 
 .coupon__button {
+  position: relative;
   min-width: 180px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  min-height: 40px;
+  padding: 8px 0;
 
   border-radius: 0 2px 2px 0;
 

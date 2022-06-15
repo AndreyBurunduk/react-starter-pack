@@ -27,4 +27,5 @@ function App(): JSX.Element {
     </Switch>
   );
 }
+
 export default App;

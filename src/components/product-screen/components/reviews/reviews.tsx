@@ -13,6 +13,7 @@ type ReviewsProps = {
   productId: number;
   productName: string;
 }
+
 function Reviews({productId, productName}: ReviewsProps): JSX.Element {
   const isReviewSuccessStatus = useSelector(isReviewSuccess);
 
@@ -28,9 +29,12 @@ function Reviews({productId, productName}: ReviewsProps): JSX.Element {
 
   const handleUpButtonClick = (evt: MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
+
     const focusableElements = getFocusableElements(document.body);
     const firstElement = focusableElements[0] as HTMLElement;
+
     firstElement.focus();
+
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
@@ -48,6 +52,7 @@ function Reviews({productId, productName}: ReviewsProps): JSX.Element {
     dispatch(setReviewsTotalCount(0));
     dispatch(setReviewsStatus(StatusType.Idle));
   }, [dispatch, productId]);
+
   return (
     <>
       <section className="reviews">
@@ -79,4 +84,5 @@ function Reviews({productId, productName}: ReviewsProps): JSX.Element {
     </>
   );
 }
+
 export default Reviews;

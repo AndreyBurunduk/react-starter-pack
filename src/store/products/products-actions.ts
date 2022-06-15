@@ -10,6 +10,7 @@ const setProducts = createAction(
     },
   }),
 );
+
 const setProductsTotalCount = createAction(
   ActionType.SetProductsTotalCount,
   (totalCount: number) => ({
@@ -18,6 +19,7 @@ const setProductsTotalCount = createAction(
     },
   }),
 );
+
 const setProductsStatus = createAction(
   ActionType.SetProductsStatus,
   (status: StatusType) => ({
@@ -26,4 +28,5 @@ const setProductsStatus = createAction(
     },
   }),
 );
+
 export {setProducts, setProductsTotalCount, setProductsStatus};

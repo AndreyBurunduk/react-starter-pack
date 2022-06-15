@@ -1,10 +1,5 @@
-import Header from '../shared/header/header';
-import Breadcrumbs from '../shared/breadcrumbs/breadcrumbs';
-import CatalogFilter from './components/filter/filter';
-import CatalogSort from './components/catalog-sort/sort';
-import CatalogCards from '../catalog-cards/catalog-cards';
-import Pagination from '../shared/pagination/pagination';
-import Footer from '../shared/footer/footer';
+import {Header, Breadcrumbs, Pagination, Footer} from '../shared/shared';
+import {Filter, Sort, Cards} from './components/components';
 
 function CatalogScreen(): JSX.Element {
   return (
@@ -15,9 +10,9 @@ function CatalogScreen(): JSX.Element {
           <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
           <Breadcrumbs />
           <div className="catalog">
-            <CatalogFilter />
-            <CatalogSort />
-            <CatalogCards />
+            <Filter />
+            <Sort />
+            <Cards />
             <Pagination />
           </div>
         </div>

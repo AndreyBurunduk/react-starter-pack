@@ -9,6 +9,7 @@ import {Namespace} from '../../../common/constants';
 const onModalOpenSelect = jest.fn();
 const mockProduct = createMockProduct();
 const mockStore = configureMockStore();
+
 const store = mockStore({
   [Namespace.Reviews]: {
     reviews: [],
@@ -17,7 +18,8 @@ const store = mockStore({
     postStatus: StatusType.Idle,
   },
 });
-describe('Component: ReviewForm', () => {
+
+describe('Component: ReviewAdd', () => {
   it('should render correctly', () => {
     render(
       <Provider store={store}>
@@ -28,6 +30,7 @@ describe('Component: ReviewForm', () => {
           productName={mockProduct.name}
         />
       </Provider>);
+
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(/Оставить отзыв/i);
     expect(screen.getByRole('heading', {level: 3})).toHaveTextContent(new RegExp(mockProduct.name,'i'));
   });

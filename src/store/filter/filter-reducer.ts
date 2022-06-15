@@ -10,6 +10,7 @@ const filterInitialState: FilterState = {
   },
   status: StatusType.Idle,
 };
+
 const filterReducer = createReducer(filterInitialState, (builder) => {
   builder
     .addCase(setPriceRangeMin, (state, action) => {
@@ -22,4 +23,5 @@ const filterReducer = createReducer(filterInitialState, (builder) => {
       state.status = action.payload.status;
     });
 });
+
 export {filterInitialState, filterReducer};

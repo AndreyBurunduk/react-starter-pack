@@ -9,6 +9,7 @@ const reviewsInitialState: ReviewsState = {
   status: StatusType.Idle,
   postStatus: StatusType.Idle,
 };
+
 const reviewsReducer = createReducer(reviewsInitialState, (builder) => {
   builder
     .addCase(setReview, (state, action) => {
@@ -31,4 +32,5 @@ const reviewsReducer = createReducer(reviewsInitialState, (builder) => {
       state.status = action.payload.status;
     });
 });
+
 export {reviewsInitialState, reviewsReducer};

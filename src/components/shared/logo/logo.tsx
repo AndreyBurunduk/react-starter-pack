@@ -5,14 +5,17 @@ import {AppRoute} from '../../../common/constants';
 type LogoProps = {
   className?: string;
 }
+
 function Logo({className = 'header'}: LogoProps): JSX.Element {
   const location = useLocation();
   const isMainScreenRoute = location.pathname === AppRoute.MainScreen;
+
   const handleLinkClick = (evt: MouseEvent<HTMLAnchorElement>) => {
     if (isMainScreenRoute) {
       evt.preventDefault();
     }
   };
+
   return (
     <Link
       onClick={handleLinkClick}
@@ -30,4 +33,5 @@ function Logo({className = 'header'}: LogoProps): JSX.Element {
     </Link>
   );
 }
+
 export default Logo;

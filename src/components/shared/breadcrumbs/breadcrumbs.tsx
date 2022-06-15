@@ -5,13 +5,16 @@ import {AppRoute} from '../../../common/constants';
 type BreadcrumbsProps = {
   productName?: string;
 }
+
 function Breadcrumbs({productName}: BreadcrumbsProps): JSX.Element {
   const location = useLocation();
   const {pageId} = useParams<{pageId: string}>();
+
   const isCatalogScreenRoute = location.pathname === AppRoute.CatalogScreen
     || location.pathname === `${AppRoute.CatalogScreenPrefix}_${pageId}`;
   const isProductScreenRoute = location.pathname.startsWith(AppRoute.ProductScreenPrefix);
   const isCartScreenRoute = location.pathname === AppRoute.CartScreen;
+
   useEffect(() => {
     if (isCatalogScreenRoute) {
       document.title = 'Каталог гитар — Guitar-shop';
@@ -22,10 +25,12 @@ function Breadcrumbs({productName}: BreadcrumbsProps): JSX.Element {
     if (isCartScreenRoute) {
       document.title = 'Корзина — Guitar-shop';
     }
+
     return () => {
       document.title = 'Guitar-shop';
     };
   });
+
   return (
     <ul className="breadcrumbs page-content__breadcrumbs">
       <li className="breadcrumbs__item">
@@ -47,4 +52,5 @@ function Breadcrumbs({productName}: BreadcrumbsProps): JSX.Element {
     </ul>
   );
 }
+
 export default Breadcrumbs;

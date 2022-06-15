@@ -7,11 +7,13 @@ const mockActionType = 'UNKNOWN_ACTION';
 const mockProducts = createMockProducts();
 const mockTotalCount = mockProducts.length;
 const mockFetchStatus = StatusType.Success;
+
 describe('Reducer: products', () => {
   it('without additional parameters should return initial state', () => {
     expect(productsReducer(void 0, {type: mockActionType}))
       .toEqual(productsInitialState);
   });
+
   it('should set products', () => {
     expect(productsReducer(productsInitialState, setProducts(mockProducts)))
       .toEqual({
@@ -19,6 +21,7 @@ describe('Reducer: products', () => {
         products: mockProducts,
       });
   });
+
   it('should set total count', () => {
     expect(productsReducer(productsInitialState, setProductsTotalCount(mockTotalCount)))
       .toEqual({
@@ -26,6 +29,7 @@ describe('Reducer: products', () => {
         totalCount: mockTotalCount,
       });
   });
+
   it('should set fetch status', () => {
     expect(productsReducer(productsInitialState, setProductsStatus(mockFetchStatus)))
       .toEqual({

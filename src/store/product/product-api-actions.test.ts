@@ -17,12 +17,15 @@ const mockStore = configureMockStore<State, Action, ThunkDispatch<State, typeof 
 const store = mockStore();
 const mockProduct = createMockProduct();
 const mockProductId = mockProduct.id;
+
 describe('Async API actions: product', () => {
   it('should dispatch setProduct and setProductStatus when GET /guitars/productId', async () => {
     mockAPI
       .onGet(APIRoute.GetProduct(mockProductId))
       .reply(200, mockProduct);
+
     await store.dispatch(fetchProduct(mockProductId));
+
     expect(store.getActions()).toEqual([
       setProductStatus(StatusType.Loading),
       setProduct(mockProduct),

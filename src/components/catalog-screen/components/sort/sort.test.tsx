@@ -12,12 +12,14 @@ const store = mockStore({
     orderType: null,
   },
 });
+
 describe('Component: Sort', () => {
   it('should render correctly', () => {
     render(
       <Provider store={store}>
         <Sort />
       </Provider>);
+
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(/Сортировать/i);
     expect(screen.getByRole('button', {name: /по цене/i})).toBeInTheDocument();
     expect(screen.getByRole('button', {name: /по популярности/i})).toBeInTheDocument();

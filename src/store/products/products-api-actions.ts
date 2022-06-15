@@ -25,4 +25,5 @@ const fetchProducts = (searchParams: URLSearchParams): ThunkActionResult => (
       });
   }
 );
+
 export {fetchProducts};

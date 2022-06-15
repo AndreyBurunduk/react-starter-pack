@@ -36,4 +36,5 @@ const fetchPriceRange = (searchParams: URLSearchParams): ThunkActionResult => (
       });
   }
 );
+
 export {fetchPriceRange};

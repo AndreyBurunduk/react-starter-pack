@@ -1,12 +1,13 @@
 import {createReducer} from '@reduxjs/toolkit';
 import {setFoundProducts, setFoundProductsStatus} from './search-actions';
-import {StatusType} from '../../common/enums';
 import {SearchState} from '../../types/state';
+import {StatusType} from '../../common/enums';
 
 const searchInitialState: SearchState = {
   foundProducts: [],
   status: StatusType.Idle,
 };
+
 const searchReducer = createReducer(searchInitialState, (builder) => {
   builder
     .addCase(setFoundProducts, (state, action) => {
@@ -16,4 +17,5 @@ const searchReducer = createReducer(searchInitialState, (builder) => {
       state.status = action.payload.status;
     });
 });
+
 export {searchInitialState, searchReducer};

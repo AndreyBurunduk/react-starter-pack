@@ -12,6 +12,7 @@ import 'intersection-observer';
 const mockProduct = createMockProduct();
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
+
 const store = mockStore({
   [Namespace.Reviews]: {
     reviews: [],
@@ -20,8 +21,10 @@ const store = mockStore({
     postStatus: StatusType.Idle,
   },
 });
+
 describe('Component: Reviews', () => {
   store.dispatch = jest.fn();
+
   it('should render correctly', () => {
     render(
       <Provider store={store}>
@@ -32,6 +35,7 @@ describe('Component: Reviews', () => {
           />
         </Router>
       </Provider>);
+
     expect(screen.getByRole('heading', {level: 3})).toHaveTextContent(/Отзывы/i);
   });
 });

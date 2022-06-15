@@ -10,6 +10,7 @@ const setFoundProducts = createAction(
     },
   }),
 );
+
 const setFoundProductsStatus = createAction(
   ActionType.SetFoundProductsStatus,
   (status: StatusType) => ({
@@ -18,4 +19,5 @@ const setFoundProductsStatus = createAction(
     },
   }),
 );
+
 export {setFoundProducts, setFoundProductsStatus};

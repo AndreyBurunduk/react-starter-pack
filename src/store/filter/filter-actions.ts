@@ -9,6 +9,7 @@ const setPriceRangeMin = createAction(
     },
   }),
 );
+
 const setPriceRangeMax = createAction(
   ActionType.SetPriceRangeMax,
   (priceRangeMax: number) => ({
@@ -17,6 +18,7 @@ const setPriceRangeMax = createAction(
     },
   }),
 );
+
 const setPriceRangeStatus = createAction(
   ActionType.SetPriceRangeStatus,
   (status: StatusType) => ({
@@ -25,4 +27,5 @@ const setPriceRangeStatus = createAction(
     },
   }),
 );
+
 export {setPriceRangeMin, setPriceRangeMax, setPriceRangeStatus};

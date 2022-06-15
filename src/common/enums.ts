@@ -5,7 +5,6 @@ const enum StatusType {
   Failure = 'failure',
   NotFound = 'notFound',
 }
-
 const enum ActionType {
   SetProduct = 'product/setProduct',
   SetProductStatus = 'product/setProductStatus',
@@ -25,7 +24,13 @@ const enum ActionType {
   SetPriceRangeMin = 'filter/setPriceRangeMin',
   SetPriceRangeMax = 'filter/setPriceRangeMax',
   SetPriceRangeStatus = 'filter/setPriceRangeStatus',
-  AddProductToCart = 'cart/addProductToCart',
+  CreateProductInCart = 'cart/createProductInCart',
+  UpdateProductCountInCart = 'cart/updateProductCountInCart',
+  DeleteProductInCart = 'cart/deleteProductInCart',
+  SetCouponPostStatus = 'cart/setCouponPostStatus',
+  SetCouponValidityStatus = 'cart/setCouponValidityStatus',
+  SetCoupon = 'cart/setCoupon',
+  SetDiscount = 'cart/setDiscount',
 }
 const enum SortType {
   Price = 'price',
@@ -52,5 +57,9 @@ const enum EssenceType {
   Available = 'available',
   StateMap = 'stateMap',
 }
-
-export {StatusType, ActionType, SortType, OrderType, GuitarType, StringCountType, EssenceType};
+const enum CouponValidityType {
+  Valid = 'valid',
+  Invalid = 'invalid',
+  Unknown = 'unknown',
+}
+export {StatusType, ActionType, SortType, OrderType, GuitarType, StringCountType, EssenceType, CouponValidityType};

@@ -1,1 +1,1 @@
-export {default as Reviews} from './reviews/reviews';
+export {default as Reviews} from '../../product-screen/components/reviews/reviews';

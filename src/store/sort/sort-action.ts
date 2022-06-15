@@ -9,6 +9,7 @@ const setSortType = createAction(
     },
   }),
 );
+
 const setOrderType = createAction(
   ActionType.SetOrderType,
   (orderType: OrderType) => ({
@@ -17,4 +18,5 @@ const setOrderType = createAction(
     },
   }),
 );
+
 export {setSortType, setOrderType};

@@ -18,12 +18,15 @@ const store = mockStore();
 const mockProducts = createMockProducts();
 const mockHeaders = {[RESPONSE_HEADER_X_TOTAL_COUNT]: mockProducts.length};
 const mockSearchParams = new URLSearchParams('');
+
 describe('Async API actions: products', () => {
   it('should dispatch setProducts, setProductsTotalCount and setProductsStatus when GET /guitars', async () => {
     mockAPI
       .onGet(APIRoute.GetProducts())
       .reply(200, mockProducts, mockHeaders);
+
     await store.dispatch(fetchProducts(mockSearchParams));
+
     expect(store.getActions()).toEqual([
       setProductsStatus(StatusType.Loading),
       setProducts(mockProducts),

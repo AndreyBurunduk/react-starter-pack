@@ -19,4 +19,5 @@ const fetchProduct = (productId: number): ThunkActionResult => (
       });
   }
 );
+
 export {fetchProduct};

@@ -8,10 +8,12 @@ import ProductScreen from './product-screen';
 import {Namespace} from '../../common/constants';
 import {StatusType} from '../../common/enums';
 import 'intersection-observer';
+import {productsAdapter} from '../../store/cart/cart-reducer';
 
 const mockProduct = createMockProduct();
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
+
 const store = mockStore({
   [Namespace.Product]: {
     product: mockProduct,
@@ -27,9 +29,14 @@ const store = mockStore({
     foundProducts: [],
     status: StatusType.Idle,
   },
+  [Namespace.Cart]: {
+    products: productsAdapter.getInitialState(),
+  },
 });
+
 describe('Component: ProductScreen', () => {
   store.dispatch = jest.fn();
+
   it('should render correctly', () => {
     render(
       <Provider store={store}>
@@ -37,6 +44,7 @@ describe('Component: ProductScreen', () => {
           <ProductScreen />
         </Router>
       </Provider>);
+
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(new RegExp(mockProduct.name,'i'));
   });
 });

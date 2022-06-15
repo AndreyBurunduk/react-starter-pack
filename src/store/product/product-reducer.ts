@@ -7,6 +7,7 @@ const productInitialState: ProductState = {
   product: null,
   status: StatusType.Idle,
 };
+
 const productReducer = createReducer(productInitialState, (builder) => {
   builder
     .addCase(setProduct, (state, action) => {
@@ -16,4 +17,5 @@ const productReducer = createReducer(productInitialState, (builder) => {
       state.status = action.payload.status;
     });
 });
+
 export {productInitialState, productReducer};

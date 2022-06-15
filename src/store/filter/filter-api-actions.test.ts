@@ -18,6 +18,7 @@ const store = mockStore();
 const mockProductFirst = createMockProduct();
 const mockProductSecond = createMockProduct();
 const mockSearchParams = new URLSearchParams('');
+
 describe('Async API actions: filter', () => {
   it('should dispatch setPriceRangeMin, setPriceRangeMax and setPriceRangeStatus when GET /guitars', async () => {
     mockAPI
@@ -25,7 +26,9 @@ describe('Async API actions: filter', () => {
       .replyOnce(200, [mockProductFirst])
       .onGet(APIRoute.GetProducts())
       .replyOnce(200, [mockProductSecond]);
+
     await store.dispatch(fetchPriceRange(mockSearchParams));
+
     expect(store.getActions()).toEqual([
       setPriceRangeStatus(StatusType.Loading),
       setPriceRangeMin(mockProductFirst.price),

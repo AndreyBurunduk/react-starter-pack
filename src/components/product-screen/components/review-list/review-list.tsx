@@ -9,6 +9,7 @@ import {APP_LOCALE, REVIEWS_COUNT_PER_STEP} from '../../../../common/constants';
 type ReviewListProps = {
   productId: number;
 }
+
 function ReviewList({productId}: ReviewListProps): JSX.Element {
   const reviews = useSelector(getReviews);
   const reviewsTotalCount = useSelector(getReviewsTotalCount);
@@ -16,15 +17,20 @@ function ReviewList({productId}: ReviewListProps): JSX.Element {
   const isSuccessStatus = useSelector(isReviewsSuccess);
   const isLoadingStatus = useSelector(isReviewsLoading);
   const isFailureStatus = useSelector(isReviewsFailure);
+
   const dispatch = useDispatch();
+
   const [reviewId, setReviewId] = useState(reviews.length);
   const [moreButton, setMoreButton] = useState<HTMLButtonElement | null>(null);
   const [isMoreButtonShown, setIsMoreButtonShown] = useState<boolean>(true);
+
   const handleMoreButtonClick = () => {
     setReviewId(reviews.length);
   };
+
   const observer = new IntersectionObserver((entries) => {
     const button = entries[0];
+
     if (button.isIntersecting) {
       setReviewId(reviews.length);
     }
@@ -32,26 +38,31 @@ function ReviewList({productId}: ReviewListProps): JSX.Element {
     rootMargin: '0px 0px -50px',
     threshold: 1.0,
   });
+
   useEffect(() => {
     if (moreButton) {
       observer.observe(moreButton);
     }
+
     return () =>  {
       if (moreButton) {
         observer.unobserve(moreButton);
       }
     };
   });
+
   useEffect(() => {
     if (isSuccessStatus && reviewId + REVIEWS_COUNT_PER_STEP >= reviewsTotalCount) {
       setIsMoreButtonShown(false);
     }
   }, [isSuccessStatus, reviewId, reviewsTotalCount]);
+
   useEffect(() => {
     if (isIdleStatus || isSuccessStatus) {
       dispatch(fetchReviews(productId, reviewId));
     }
-  }, [reviewId]);
+  }, [dispatch, isIdleStatus, isSuccessStatus, productId, reviewId]);
+
   if (isSuccessStatus && reviews.length === 0) {
     return (
       <div className="review-list">
@@ -59,6 +70,7 @@ function ReviewList({productId}: ReviewListProps): JSX.Element {
       </div>
     );
   }
+
   if (isLoadingStatus && reviews.length === 0) {
     return (
       <div className="review-list">
@@ -66,6 +78,7 @@ function ReviewList({productId}: ReviewListProps): JSX.Element {
       </div>
     );
   }
+
   if (isFailureStatus) {
     return (
       <div className="review-list">
@@ -73,11 +86,13 @@ function ReviewList({productId}: ReviewListProps): JSX.Element {
       </div>
     );
   }
+
   return (
     <>
       <ul className="review-list">
         {reviews.map((review) => {
           const {id, userName, advantage, disadvantage, comment: commentText, rating, createAt} = review;
+
           return(
             <li key={id} className="review" data-testid="review">
               <div className="review__wrapper">
@@ -122,4 +137,5 @@ function ReviewList({productId}: ReviewListProps): JSX.Element {
     </>
   );
 }
+
 export default ReviewList;

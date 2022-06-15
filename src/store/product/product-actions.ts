@@ -10,6 +10,7 @@ const setProduct = createAction(
     },
   }),
 );
+
 const setProductStatus = createAction(
   ActionType.SetProductStatus,
   (status: StatusType) => ({
@@ -18,4 +19,5 @@ const setProductStatus = createAction(
     },
   }),
 );
+
 export {setProduct, setProductStatus};

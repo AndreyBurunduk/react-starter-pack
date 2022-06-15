@@ -7,11 +7,13 @@ const mockActionType = 'UNKNOWN_ACTION';
 const mockPriceRangeMin = datatype.number({min: 1000, max: 10000});
 const mockPriceRangeMax = datatype.number({min: 10000, max: 100000});
 const mockFetchStatus = StatusType.Success;
+
 describe('Reducer: filter', () => {
   it('without additional parameters should return initial state', () => {
     expect(filterReducer(void 0, {type: mockActionType}))
       .toEqual(filterInitialState);
   });
+
   it('should set price range min', () => {
     expect(filterReducer(filterInitialState, setPriceRangeMin(mockPriceRangeMin)))
       .toEqual({
@@ -22,6 +24,7 @@ describe('Reducer: filter', () => {
         },
       });
   });
+
   it('should set price range max', () => {
     expect(filterReducer(filterInitialState, setPriceRangeMax(mockPriceRangeMax)))
       .toEqual({
@@ -32,6 +35,7 @@ describe('Reducer: filter', () => {
         },
       });
   });
+
   it('should set fetch status', () => {
     expect(filterReducer(filterInitialState, setPriceRangeStatus(mockFetchStatus)))
       .toEqual({

@@ -9,6 +9,7 @@ import {StatusType} from '../../../../common/enums';
 
 const history = createMemoryHistory();
 const mockStore = configureMockStore();
+
 const store = mockStore({
   [Namespace.Filter]: {
     priceRange: {
@@ -18,15 +19,18 @@ const store = mockStore({
     status: StatusType.Idle,
   },
 });
+
 describe('Component: Filter', () => {
   it('should render correctly', () => {
     store.dispatch = jest.fn();
+
     render(
       <Provider store={store}>
         <Router history={history}>
           <Filter />
         </Router>
       </Provider>);
+
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(/Фильтр/i);
     expect(screen.getByText(/Цена, ₽/i)).toBeInTheDocument();
     expect(screen.getByText(/Тип гитар/i)).toBeInTheDocument();

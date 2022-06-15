@@ -1,3 +1,4 @@
+import {Link} from 'react-router-dom';
 import Logo from '../logo/logo';
 
 function Footer(): JSX.Element {
@@ -44,19 +45,19 @@ function Footer(): JSX.Element {
           <h2 className="footer__nav-title">Информация</h2>
           <ul className="footer__nav-list">
             <li className="footer__nav-list-item">
-              <a className="link" href="#top">Где купить?</a>
+              <Link className="link" to="#">Где купить?</Link>
             </li>
             <li className="footer__nav-list-item">
-              <a className="link" href="#top">Блог</a>
+              <Link className="link" to="#">Блог</Link>
             </li>
             <li className="footer__nav-list-item">
-              <a className="link" href="#top">Вопрос - ответ</a>
+              <Link className="link" to="#">Вопрос - ответ</Link>
             </li>
             <li className="footer__nav-list-item">
-              <a className="link" href="#top">Возврат</a>
+              <Link className="link" to="#">Возврат</Link>
             </li>
             <li className="footer__nav-list-item">
-              <a className="link" href="#top">Сервис-центры</a>
+              <Link className="link" to="#">Сервис-центры</Link>
             </li>
           </ul>
         </section>
